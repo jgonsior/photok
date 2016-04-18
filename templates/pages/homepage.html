@@ -1,9 +1,11 @@
 {% extends "basic_page.html" -%}
 
-{% block header %}{% include "generic/header.html" %}{% endblock header %}
+{% block title %}Homepage{% endblock %}
 
-{% block nav %}{% include "generic/nav.html" %}{% endblock nav %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
 
-{% block content %}{% include "content/homepage.html" %}{% endblock content %}
-
-{% block footer %}{% include "generic/footer.html" %}{% endblock footer %}
+{% block content %}
+  {% include "content/homepage.html" %}
+{% endblock %}
