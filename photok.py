@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template_string
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
+from wtforms.validators import ValidationError
 
 app = Flask(__name__)
 app.config.from_pyfile('flask.cfg')
@@ -12,11 +13,12 @@ if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] ="sqlite:///testdb.db"
     app.config['DEBUG'] = True
+    app.config['CSRF_ENABLED'] = False
 
 db = SQLAlchemy(app)
 
 
-
+# some models -> need to be transfered to a different file later one :)
 # Define the Role DataModel
 class Role(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
@@ -54,14 +56,18 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
 
-
+# should be used only for development mode
+def stupid_non_productive_password_validator(form, field):
+    password = field.data
+    if len(password) < 3:
+        raise ValidationError(_('Password must have at least 3 characters'))
 
 # Create all database tables
 db.create_all()
 
 
-db_adapter =  SQLAlchemyAdapter(db, User)    
-userManager = UserManager(db_adapter, app)
+db_adapter =  SQLAlchemyAdapter(db, User) 
+userManager = UserManager(db_adapter, app, password_validator=stupid_non_productive_password_validator,)
 
 
 @app.route('/')
