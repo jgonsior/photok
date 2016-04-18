@@ -3,17 +3,10 @@ from flask import Flask, render_template_string
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager, UserMixin, SQLAlchemyAdapter, roles_required
 from wtforms.validators import ValidationError
+import config
 
 app = Flask(__name__)
-app.config.from_pyfile('flask.cfg')
-
-# some configs depending on if we're running the code locally or remotely
-if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
-    app.config['SQLALCHEMY_DATABASE_URI'] =os.environ['OPENSHIFT_MYSQL_DB_URL']
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] ="sqlite:///testdb.db"
-    app.config['DEBUG'] = True
-    app.config['CSRF_ENABLED'] = False
+app.config.from_object('config.Config')
 
 db = SQLAlchemy(app)
 
@@ -54,29 +47,31 @@ class UserRoles(db.Model):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
 
-# should be used only for development mode
-def stupid_non_productive_password_validator(form, field):
+def passwordValidator(form, field):
     password = field.data
-    if len(password) < 3:
+    if app.config['DEBUG'] == True:
+        limit = 3
+    else:
+        limit = 8
+    if len(password) < limit:
         raise ValidationError(_('Password must have at least 3 characters'))
 
 # Create all database tables
 db.create_all()
 
-
-db_adapter =  SQLAlchemyAdapter(db, User) 
-user_manager = UserManager(db_adapter, app, password_validator=stupid_non_productive_password_validator,)
+dbAdapter =  SQLAlchemyAdapter(db, User) 
+userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
 
 # Create a test user
-# @todo: generate global variable for "production" and "development" to make the code more useful!
-if not User.query.filter(User.username=='test').first():
-    user1 = User(username='test', email='test@example.com', active=True,
-	    password=user_manager.hash_password('test'))
-    user1.roles.append(Role(name='admin'))
-    user1.roles.append(Role(name='user'))
-    db.session.add(user1)
-    db.session.commit()
+if app.config['DEBUG'] == True:
+    if not User.query.filter(User.username=='test').first():
+        user1 = User(username='test', email='test@example.com', active=True,
+                password=userManager.hash_password('test'))
+        user1.roles.append(Role(name='admin'))
+        user1.roles.append(Role(name='user'))
+        db.session.add(user1)
+        db.session.commit()
 
 
 
@@ -89,20 +84,20 @@ def hello_world():
                 <h2>Home page</h2>
                 <p>This page can be accessed by anyone.</p><br/>
                 <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
-                <p><a href={{ url_for('julius') }}>Members page</a> (login required)</p>
+                <p><a href={{ url_for('secret') }}>Members page</a> (login required)</p>
             {% endblock %}
             """)
 
-@app.route('/julius')
+@app.route('/secret')
 @roles_required('admin')
-def julius():
+def secret():
     return render_template_string("""
             {% extends "base.html" %}
             {% block content %}
                 <h2>Members page</h2>
                 <p>This page can only be accessed by authenticated users.</p><br/>
                 <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
-                <p><a href={{ url_for('julius') }}>Members page</a> (login required)</p>
+                <p><a href={{ url_for('secret') }}>Members page</a> (login required)</p>
             {% endblock %}
             """)
 
