@@ -8,21 +8,33 @@
 <div class="row">
   <div class="col-md-6">
     <h1>Homepage</h1>
+    <h4 ng-controller="homepage">Message: <u>[[message]]</u></h4>
     <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      The message above is set in the Angular file <code>static/main.js</code>
+      <pre>var photokApp = angular.module('photok', []);</pre>
+      This line creates the Angular application.
+
+      <hr/>
+
+      <pre>photokApp.config(['$interpolateProvider', function($interpolateProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+      }]);</pre>
+
+      We do that to avoid conflicts with Flask (Jinga templates).
     </p>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+
   </div>
 
   <div class="col-md-6">
+    <h3>What are the different files ?</h3>
     <ul class="list-group">
-      <li class="list-group-item">Cras justo odio</li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Morbi leo risus</li>
-      <li class="list-group-item">Porta ac consectetur ac</li>
-      <li class="list-group-item">Vestibulum at eros</li>
+      <li class="list-group-item"><code>static/main.js</code><i style="float:right">Angular javascript file</i></li>
+      <li class="list-group-item"><code>templates/</code><i style="float:right">HTML templates (Jinga)</i></li>
+      <li class="list-group-item"><code>templates/basic_page.html</code><i style="float:right">Basic template (parent)</i></li>
+      <li class="list-group-item"><code>templates/pages/</code><i style="float:right">Different pages (inherit from <code>basic_page.html</code>)</i></li>
+      <li class="list-group-item"><code>templates/content/</code><i style="float:right">Specific content for each page</i></li>
+      <li class="list-group-item"><code>templates/generic/</code><i style="float:right">Content that is the same for each page</i></li>
     </ul>
   </div>
 </div>
