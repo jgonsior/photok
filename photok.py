@@ -13,13 +13,12 @@ else:
     app.config['DEBUG'] = True
 
 @app.route('/')
-
 def homepage():
-    return render_template('pages/homepage.html')
+    return render_template('pages/homepage.html',active="home")
 
 @app.route('/link')
 def link():
-    return render_template('pages/page.html')
+    return render_template('pages/page.html',active="page")
 
 if __name__ == '__main__':
     app.run()
