@@ -22,4 +22,4 @@ def link():
     return render_template('pages/page.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
