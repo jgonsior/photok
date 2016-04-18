@@ -2,8 +2,20 @@
   <div class="header clearfix">
     <nav>
       <ul class="nav nav-pills pull-right">
-        <li role="presentation" class="active"><a href="/">Home</a></li>
-        <li role="presentation"><a href="/link">Page</a></li>
+
+        {% if active == "home" %}
+          <li role="presentation" class="active"><a href="/">Home</a></li>
+        {% else %}
+          <li role="presentation"><a href="/">Home</a></li>
+        {% endif %}
+
+        {% if active == "page" %}
+          <li role="presentation" class="active"><a href="/link">Page</a></li>
+        {% else %}
+          <li role="presentation"><a href="/link">Page</a></li>
+        {% endif %}
+
+
         <li role="presentation"><a href="#">SignUp</a></li>
       </ul>
     </nav>
