@@ -1,21 +1,15 @@
 from flask import Flask
+from flask import render_template
+
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello <a href="laurent">LAURENT</a>, Sijmen and Julius!'
+def homepage():
+    return render_template('homepage.html')
 
-@app.route('/laurent')
-def laurent_fun():
-    return 'Hello Laurent only!'
-
-@app.route('/sijmen')
-def sijmen_fun():
-    return 'Hello Laurent, Sijmen and Julius!'
-
-@app.route('/julius')
-def julius_fun():
-    return 'Hello Laurent, Sijmen and Julius!'
+@app.route('/link')
+def link():
+    return render_template('page.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
