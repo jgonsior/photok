@@ -13,7 +13,6 @@ else:
     app.config['DEBUG'] = True
 
 @app.route('/')
-
 def homepage():
     return render_template('pages/homepage.html')
 
