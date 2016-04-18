@@ -1,7 +1,7 @@
 import os
 from flask import Flask, render_template_string
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
+from flask_user import UserManager, UserMixin, SQLAlchemyAdapter, roles_required
 from wtforms.validators import ValidationError
 
 app = Flask(__name__)
@@ -45,8 +45,6 @@ class User(db.Model, UserMixin):
 
     # User information
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
-    first_name = db.Column(db.String(100), nullable=False, server_default='')
-    last_name = db.Column(db.String(100), nullable=False, server_default='')
 
 
 
@@ -67,7 +65,20 @@ db.create_all()
 
 
 db_adapter =  SQLAlchemyAdapter(db, User) 
-userManager = UserManager(db_adapter, app, password_validator=stupid_non_productive_password_validator,)
+user_manager = UserManager(db_adapter, app, password_validator=stupid_non_productive_password_validator,)
+
+
+# Create a test user
+# @todo: generate global variable for "production" and "development" to make the code more useful!
+if not User.query.filter(User.username=='test').first():
+    user1 = User(username='test', email='test@example.com', active=True,
+	    password=user_manager.hash_password('test'))
+    user1.roles.append(Role(name='admin'))
+    user1.roles.append(Role(name='user'))
+    db.session.add(user1)
+    db.session.commit()
+
+
 
 
 @app.route('/')
@@ -83,7 +94,7 @@ def hello_world():
             """)
 
 @app.route('/julius')
-@login_required
+@roles_required('admin')
 def julius():
     return render_template_string("""
             {% extends "base.html" %}
