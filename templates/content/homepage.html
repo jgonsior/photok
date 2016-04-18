@@ -9,6 +9,12 @@
   <div class="col-md-6">
     <h1>Homepage</h1>
     <h4 ng-controller="homepage">Message: <u>[[message]]</u></h4>
+    <p style="color:darkred">
+    <b>HOW TO LOGIN</b>
+    <br>
+    You can use the user called "test" and the password "test". You can as well create a new user <a href="/user/register">here</a>, but that user won't have the admin role and is therefore not able to actually view the "Page".
+    </p>
+
     <p>
       The message above is set in the Angular file <code>static/main.js</code>
       <pre>var photokApp = angular.module('photok', []);</pre>
