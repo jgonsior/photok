@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template_string
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
 
@@ -16,23 +16,45 @@ else:
 db = SQLAlchemy(app)
 
 
+
+# Define the Role DataModel
+class Role(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+
 # Define the User data model. Make sure to add flask.ext.user UserMixin !!!
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    
+
+    # Relationships
+    roles = db.relationship('Role', secondary='user_roles',
+            backref=db.backref('users', lazy='dynamic'))
+
+
     # User authentication information
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False, server_default='')
     reset_password_token = db.Column(db.String(100), nullable=False, server_default='')
-    
+
     # User email information
     email = db.Column(db.String(255), nullable=False, unique=True)
     confirmed_at = db.Column(db.DateTime())
-    
+
     # User information
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
     first_name = db.Column(db.String(100), nullable=False, server_default='')
     last_name = db.Column(db.String(100), nullable=False, server_default='')
+
+
+
+# Define the UserRoles DataModel
+class UserRoles(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
+
+
 
 # Create all database tables
 db.create_all()
@@ -44,20 +66,28 @@ userManager = UserManager(db_adapter, app)
 
 @app.route('/')
 def hello_world():
-    return 'Hello <a href="laurent">Laurent</a>, Sijmen and Julius!'
-
-@app.route('/laurent')
-def laurent_fun():
-    return 'Hello Laurent only!'
-
-@app.route('/sijmen')
-def sijmen_fun():
-    return 'Hello Laurent, Sijmen and Julius!'
+    return render_template_string("""
+            {% extends "base.html" %}
+            {% block content %}
+                <h2>Home page</h2>
+                <p>This page can be accessed by anyone.</p><br/>
+                <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
+                <p><a href={{ url_for('julius') }}>Members page</a> (login required)</p>
+            {% endblock %}
+            """)
 
 @app.route('/julius')
-def julius_fun():
-    return 'Hello <b>Julius</b>!'
-
+@login_required
+def julius():
+    return render_template_string("""
+            {% extends "base.html" %}
+            {% block content %}
+                <h2>Members page</h2>
+                <p>This page can only be accessed by authenticated users.</p><br/>
+                <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
+                <p><a href={{ url_for('julius') }}>Members page</a> (login required)</p>
+            {% endblock %}
+            """)
 
 if __name__ == '__main__':
     app.run()
