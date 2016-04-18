@@ -12,7 +12,6 @@ class Config(object):
 
     if 'OPENSHIFT_APP_NAME' in os.environ:
         # we're obviously running the app now on openshift
-        app.config.from_object('ProductionConfig')
         DEBUG = False
         TESTING = False
         CSREF_ENABLED=True
