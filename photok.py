@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template_string
+from flask import Flask, render_template
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from wtforms.validators import ValidationError
 from models import users, db
@@ -11,7 +11,6 @@ db.init_app(app)
 with app.app_context():
     # Create all database tables
     db.create_all()
-
 
     def passwordValidator(form, field):
         password = field.data
@@ -39,29 +38,13 @@ with app.app_context():
 
 
 @app.route('/')
-def hello_world():
-    return render_template_string("""
-            {% extends "base.html" %}
-            {% block content %}
-                <h2>Home page</h2>
-                <p>This page can be accessed by anyone.</p><br/>
-                <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
-                <p><a href={{ url_for('secret') }}>Members page</a> (login required)</p>
-            {% endblock %}
-            """)
+def homepage():
+    return render_template('pages/homepage.html',active="home")
 
-@app.route('/secret')
+@app.route('/link')
 @roles_required('admin')
-def secret():
-    return render_template_string("""
-            {% extends "base.html" %}
-            {% block content %}
-                <h2>Members page</h2>
-                <p>This page can only be accessed by authenticated users.</p><br/>
-                <p><a href={{ url_for('hello_world') }}>Home page</a> (anyone)</p>
-                <p><a href={{ url_for('secret') }}>Members page</a> (login required)</p>
-            {% endblock %}
-            """)
+def link():
+    return render_template('pages/page.html',active="page")
 
 if __name__ == '__main__':
     app.run()

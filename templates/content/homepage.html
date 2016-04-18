@@ -1,0 +1,46 @@
+
+<div class="jumbotron">
+  <h1>Hello, world!</h1>
+  <p>Welcome to photok, the best web application to create photo contests</p>
+  <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <h1>Homepage</h1>
+    <h4 ng-controller="homepage">Message: <u>[[message]]</u></h4>
+    <p style="color:darkred">
+    <b>HOW TO LOGIN</b>
+    <br>
+    You can use the user called "test" and the password "test". You can as well create a new user <a href="/user/register">here</a>, but that user won't have the admin role and is therefore not able to actually view the "Page".
+    </p>
+
+    <p>
+      The message above is set in the Angular file <code>static/main.js</code>
+      <pre>var photokApp = angular.module('photok', []);</pre>
+      This line creates the Angular application.
+
+      <hr/>
+
+      <pre>photokApp.config(['$interpolateProvider', function($interpolateProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+      }]);</pre>
+
+      We do that to avoid conflicts with Flask (Jinga templates).
+    </p>
+
+  </div>
+
+  <div class="col-md-6">
+    <h3>What are the different files ?</h3>
+    <ul class="list-group">
+      <li class="list-group-item"><code>static/main.js</code><i style="float:right">Angular javascript file</i></li>
+      <li class="list-group-item"><code>templates/</code><i style="float:right">HTML templates (Jinga)</i></li>
+      <li class="list-group-item"><code>templates/basic_page.html</code><i style="float:right">Basic template (parent)</i></li>
+      <li class="list-group-item"><code>templates/pages/</code><i style="float:right">Different pages (inherit from <code>basic_page.html</code>)</i></li>
+      <li class="list-group-item"><code>templates/content/</code><i style="float:right">Specific content for each page</i></li>
+      <li class="list-group-item"><code>templates/generic/</code><i style="float:right">Content that is the same for each page</i></li>
+    </ul>
+  </div>
+</div>
