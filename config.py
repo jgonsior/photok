@@ -2,7 +2,6 @@ import os
 
 class Config(object):
     USER_APP_NAME = 'photok'
-    DATABASE_URI = 'sqlite://:memory:'
 
     # we kind of don't use a mail server
     USER_SEND_PASSWORD_CHANGED_EMAIL=False
@@ -16,7 +15,8 @@ class Config(object):
         TESTING = False
         CSREF_ENABLED=True
         DATABASE_URI=os.environ['OPENSHIFT_MYSQL_DB_URL']
-        SQLALCHEMY_ECHO = False
+        SQLALCHEMY_ECHO = True
+        Debug = True
         SECRET_KEY=os.environ['OPENSHIFT_SECRET_TOKEN']
     else:
         # hopefully this is on our local development machines :)
