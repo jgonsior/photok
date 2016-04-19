@@ -8,6 +8,7 @@ class Config(object):
     USER_SEND_REGISTERED_EMAIL=False
     USER_SEND_USERNAME_CHANGED_EMAIL=False
     USER_ENABLE_CONFIRM_EMAIL=False
+    SQLALCHEMY_TRACK_MODIFICATIONS=True
 
     if 'OPENSHIFT_APP_NAME' in os.environ:
         # we're obviously running the app now on openshift
