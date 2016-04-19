@@ -14,7 +14,8 @@ class Config(object):
         DEBUG = False
         TESTING = False
         CSREF_ENABLED=True
-        SQLALCHEMY_DATABASE_URI=os.environ['OPENSHIFT_MYSQL_DB_URL'] + os.environ['OPENSHIFT_APP_NAME']
+#        SQLALCHEMY_DATABASE_URI=os.environ['OPENSHIFT_MYSQL_DB_URL'] + os.environ['OPENSHIFT_APP_NAME']
+        SQLALCHEMY_DATABASE_URI=' mysql://adminnzNuXLe:CFAbKwkDi6sQ@127.2.255.2:3306/photok'
         SQLALCHEMY_ECHO = False
         Debug = False
         SECRET_KEY=os.environ['OPENSHIFT_SECRET_TOKEN']
