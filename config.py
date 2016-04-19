@@ -11,11 +11,11 @@ class Config(object):
 
     if 'OPENSHIFT_APP_NAME' in os.environ:
         # we're obviously running the app now on openshift
-        DEBUG = False
-        TESTING = False
+        DEBUG = True
+        TESTING = True
         CSRF_ENABLED=True
         SQLALCHEMY_DATABASE_URI=os.environ['OPENSHIFT_MYSQL_DB_URL'] + os.environ['OPENSHIFT_APP_NAME']
-        SQLALCHEMY_ECHO = False
+        SQLALCHEMY_ECHO = True
         SECRET_KEY=os.environ['OPENSHIFT_SECRET_TOKEN']
     else:
         # hopefully this is on our local development machines :)
