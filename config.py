@@ -10,6 +10,21 @@ class Config(object):
     USER_ENABLE_CONFIRM_EMAIL=False
     SQLALCHEMY_TRACK_MODIFICATIONS=True
 
+    # URLs                        # Default
+    USER_CHANGE_PASSWORD_URL      = '/user/change-password'
+    USER_CHANGE_USERNAME_URL      = '/user/change-username'
+    USER_CONFIRM_EMAIL_URL        = '/user/confirm-email/<token>'
+    USER_EMAIL_ACTION_URL         = '/user/email/<id>/<action>'     # v0.5.1 and up
+    USER_FORGOT_PASSWORD_URL      = '/user/forgot-password'
+    USER_INVITE_URL               = '/user/invite'                  # v0.6.2 and up
+    USER_LOGIN_URL                = '/user/login'
+    USER_LOGOUT_URL               = '/user/logout'
+    USER_MANAGE_EMAILS_URL        = '/user/manage-emails'
+    USER_REGISTER_URL             = '/user/register'
+    USER_RESEND_CONFIRM_EMAIL_URL = '/user/resend-confirm-email'    # v0.5.0 and up
+    USER_RESET_PASSWORD_URL       = '/user/reset-password/<token>'
+
+
     if 'OPENSHIFT_APP_NAME' in os.environ:
         # we're obviously running the app now on openshift
         DEBUG = True
