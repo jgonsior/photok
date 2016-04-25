@@ -28,6 +28,9 @@ class User(db.Model, UserMixin):
     # User information
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
 
+    # added on our own, the rest is from the flask-user documentation
+    profilePicture = db.Column(db.String(255), server_default='defaultProfilePicture.jpg')
+
 
 
 # Define the UserRoles DataModel
