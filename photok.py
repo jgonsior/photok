@@ -21,12 +21,12 @@ with app.app_context():
     
     def passwordValidator(form, field):
         password = field.data
-        if app.config['DEBUG'] == True:
+        if app.config['DEBUG']:
             limit = 3
         else:
             limit = 8
         if len(password) < limit:
-            raise ValidationError(('Password must have at least 3 characters'))
+            raise ValidationError('Password must have at least 3 characters')
 
 
     dbAdapter =  SQLAlchemyAdapter(db, User) 
@@ -59,10 +59,20 @@ with app.app_context():
         db.session.commit()
 
 
-
 @app.route('/')
 def homepage():
     return render_template('pages/homepage.html',active="home")
+
+
+@app.route('/browse')
+def browse_contests():
+    return render_template('pages/browse.html',active="browse")
+
+
+@app.route('/contest') # /<contestName>') TODO, load actual contest
+def view_contest(): # contestName): TODO, load actual contest
+    return render_template('pages/contest.html',active="")
+
 
 @app.route('/link')
 @roles_required('admin')

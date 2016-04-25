@@ -1,3 +1,10 @@
 *.pyc
 *.swp
 testdb.db
+.idea/.name
+.idea/TDDD272016_photok.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
