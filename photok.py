@@ -22,7 +22,7 @@ with app.app_context():
             raise ValidationError(('Password must have at least 3 characters'))
 
 
-    dbAdapter =  SQLAlchemyAdapter(db, users.User) 
+    dbAdapter =  SQLAlchemyAdapter(db, users.User)
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
     # Create a test user

@@ -27,8 +27,8 @@ class Config(object):
 
     if 'OPENSHIFT_APP_NAME' in os.environ:
         # we're obviously running the app now on openshift
-        DEBUG = True
-        TESTING = True
+        DEBUG = False
+        TESTING = False
         CSRF_ENABLED=True
         SQLALCHEMY_DATABASE_URI=os.environ['OPENSHIFT_MYSQL_DB_URL'] + os.environ['OPENSHIFT_APP_NAME']
         SQLALCHEMY_ECHO = False
