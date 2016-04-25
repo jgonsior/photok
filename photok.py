@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from wtforms.validators import ValidationError
-from models import users, db
+from models import users, images, db
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
