@@ -26,14 +26,13 @@ with app.app_context():
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
     # Create a test user
-    if app.config['DEBUG'] == True:
-        if not users.User.query.filter(users.User.username=='test').first():
-            user1 = users.User(username='test', email='test@example.com', active=True,
-                    password=userManager.hash_password('test'))
-            user1.roles.append(users.Role(name='admin'))
-            user1.roles.append(users.Role(name='user'))
-            db.session.add(user1)
-            db.session.commit()
+    if not users.User.query.filter(users.User.username=='test').first():
+        user1 = users.User(username='test', email='test@example.com', active=True,
+                password=userManager.hash_password('test'))
+        user1.roles.append(users.Role(name='admin'))
+        user1.roles.append(users.Role(name='user'))
+        db.session.add(user1)
+        db.session.commit()
 
 
 
