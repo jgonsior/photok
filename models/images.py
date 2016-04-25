@@ -5,8 +5,7 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    userId = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
-#    contestId = db.Column(db.Integer(), db.ForeignKey('contest.id'))
+    contestId = db.Column(db.Integer(), db.ForeignKey('contest.id'))
 
     uploadedOn = db.Column(db.DateTime(), nullable=False)
 
@@ -16,11 +15,14 @@ class Image(db.Model):
 
 
     # Relationships
-    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    userId = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     user = db.relationship('User', backref=db.backref('Image', lazy='dynamic'))
 
+    contestId = db.Column(db.Integer, db.ForeignKey('contest.id', ondelete='CASCADE'))
+    contest = db.relationship('Contest', backref=db.backref('Contest', lazy='dynamic'))
 
-    def __init__(self, title, prize, user, uploadedOn=None, exifData=None):
+
+    def __init__(self, title, prize, user, contest, uploadedOn=None, exifData=None):
         self.title = title
         self.prize = prize
         self.user = user
