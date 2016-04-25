@@ -11,7 +11,6 @@ class Image(db.Model):
     exifData = db.Column(db.Text)
     prize = db.Column(db.String(255), nullable=False)
 
-
     # Relationships
     userId = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     user = db.relationship('User', backref=db.backref('Image', lazy='dynamic'))

@@ -13,7 +13,7 @@ class Contest(db.Model):
     voteMethod = db.Column(db.String(255), nullable=False)
 
 
-    def __init__(self, headline, workingTitle, createdDate, startDate, endDate, voteMethod):
+    def __init__(self, headline, workingTitle, startDate, endDate, voteMethod, createdDate = None):
         self.headline = headline
         self.workingTitle = workingTitle
         

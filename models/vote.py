@@ -1,7 +1,7 @@
 from models import db
 from datetime import datetime
 
-class Votes(db.Model):
+class Vote(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
