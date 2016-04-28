@@ -1,6 +1,8 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
+from flask_restful import reqparse, Resource, Api
+
 from wtforms.validators import ValidationError
 from models import db
 from models.contest import Contest
@@ -12,6 +14,47 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 app.config.from_object('config.Config')
 db.init_app(app)
+api = Api(app)
+
+
+contests = {
+        'contest1' : {'title': 'cont1'},
+        'contest2' : {'title': 'cont2'},
+        'contest3' : {'title': 'cont3'},
+        }
+
+parser = reqparse.RequestParser()
+parser.add_argument('title')
+
+class ContestApi(Resource):
+    def get(self, contest_id):
+        return contests[contest_id]
+
+    def delete(self, contest_id):
+        del contests[contest_id]
+        return '', 204
+
+    def put(self, contest_id):
+        args = parser.parse_args()
+        contest = {'title': args['title']}
+        contests[contest_id] = contest
+        return contest, 201
+
+class ContestListApi(Resource):
+    def get(self):
+        return contests
+
+    def post(self):
+        args = parser.parse_args()
+        contest_id = int(max(contests.keys()).lstrip('title')) +1
+        contest_id = 'title%i' % todo_id
+        contests[contest_id] = {'title': args['title']}
+        return contests[contest_id], 201
+
+
+api.add_resource(ContestApi, '/api/contest/<contest_id>')
+api.add_resource(ContestListApi, '/api/contests')
+
 
 with app.app_context():
     # Create all database tables
@@ -59,7 +102,6 @@ with app.app_context():
         db.session.add(vote2)
         db.session.add(vote3)
         db.session.commit()
-
 
 @app.route('/')
 def homepage():
