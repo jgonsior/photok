@@ -17,8 +17,7 @@ with app.app_context():
     # Create all database tables
     db.create_all()
 
-    contest1 = Contest("Link\ouml;pings most beautifull spring flower", "spring contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
-    
+
     def passwordValidator(form, field):
         password = field.data
         if app.config['DEBUG']:
@@ -29,7 +28,7 @@ with app.app_context():
             raise ValidationError('Password must have at least 3 characters')
 
 
-    dbAdapter =  SQLAlchemyAdapter(db, User) 
+    dbAdapter =  SQLAlchemyAdapter(db, User)
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
     # create some fake data for deveoloping
@@ -40,6 +39,9 @@ with app.app_context():
         user1.roles.append(Role(name='admin'))
         user1.roles.append(Role(name='user'))
         db.session.add(user1)
+        
+        contest1 = Contest("Link\ouml;pings most beautifull spring flower", "spring contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
+        
         db.session.add(contest1)
 
         image1 = Image("Tulip", "Gold", user1, contest1)
