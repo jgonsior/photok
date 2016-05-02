@@ -2,8 +2,10 @@ import os
 from flask import Flask, render_template, request
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
+from sqlalchemy.orm import  class_mapper
 from pprint import pprint
 import json
+import sqlalchemy
 from wtforms.validators import ValidationError
 from models import db
 from models.contest import Contest
@@ -17,9 +19,9 @@ app.config.from_object('config.Config')
 db.init_app(app)
 api = Api(app)
 
-
+# the next line is important so that flask-sqlalchemy knows  on which database
+# it should perate on
 with app.app_context():
-    # Create all database tables
     db.create_all()
 
     def passwordValidator(form, field):
@@ -44,17 +46,38 @@ with app.app_context():
         user1.roles.append(Role(name='user'))
         db.session.add(user1)
 
+        argCon1 = {
+                "headline": "Link\ouml;pings most beautifull spring flower", 
+                "workingTitle": "spring contest 2016",
+                "startDate": datetime.utcnow() + timedelta(days=10),
+                "endDate": datetime.utcnow() + timedelta(days=20),
+                "voteMethod": "simple"
+                }
 
-        contest1 = Contest("Link\ouml;pings most beautifull spring flower", "spring contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
-        contest2 = Contest("Link\ouml;pings most beautifull autumn flower",
-                "summer contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
-        contest3 = Contest("Link\ouml;pings most beautifull winter flower",
-                "winter contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
+        argCon2 = {
+                "headline": "Link\ouml;pings most beautifull autumn flower",
+                "workingTitle": "summer contest 2016",
+                "startDate": datetime.utcnow() + timedelta(days=10),
+                "endDate": datetime.utcnow() + timedelta(days=20),
+                "voteMethod": "simple"
+                }
+
+        argCon3 = {
+                "headline": "Link\ouml;pings most beautifull winter flower",
+                "workingTitle": "winter contest 2016",
+                "startDate": datetime.utcnow() + timedelta(days=10),
+                "endDate": datetime.utcnow() + timedelta(days=20),
+                "voteMethod": "simple"
+                }
+
+        contest1 = Contest(argCon1)
+        contest2 = Contest(argCon2)
+        contest3 = Contest(argCon3)
 
         db.session.add(contest1)
         db.session.add(contest2)
         db.session.add(contest3)
- 
+
         image1 = Image("Tulip", "Gold", user1, contest1)
         image2 = Image("Sunflower", "Silver", user1, contest1)
         image3 = Image("Onion", "Bronze", user1, contest1)
@@ -77,55 +100,70 @@ with app.app_context():
     # 3. create new contest
     # 4. save contest to database :)
 
-    def serialize(model):
-        columns = [c.key for c in class_mapper(model.__class__).columns]
-        return dict((c, getattr(model,c)) for c in columns)
-    
-    contests = {}
-    for c in Contest.query.all(): 
-        contest = c.__dict__
-        del(contest['_sa_instance_state'])
-        for key, value in contest.iteritems():
-            if isinstance(value, datetime):
-                contest[key] = str(value)
-        contests[contest['id']] = contest
-
-
-    pprint(contests)
+    # converts f.e. datetime objects to strings
+    def prepare_dict_for_json(d):
+        del(d['_sa_instance_state'])
+        for k,v in d.iteritems():
+            if isinstance(v, datetime):
+                d[k] = str(v)
+        return d
 
 
     parser = reqparse.RequestParser()
-    parser.add_argument('title')
+    # accept in a magical way all properties of our model :)
+    for prop in class_mapper(Contest).iterate_properties:
+        if isinstance(prop, sqlalchemy.orm.ColumnProperty):
+            parser.add_argument(str(prop).replace("Contest.", ""))
+
 
     class ContestApi(Resource):
-        def get(self, contest_id):
-            return contests[contest_id]
+        def get(self, contestId):
+            return prepare_dict_for_json(Contest.query.get(contestId).__dict__)
 
-        def delete(self, contest_id):
-            del contests[contest_id]
+        def delete(self, contestId):
+            contest = Contest.query.get(contestId)
+            db.session.delete(contest)
+            db.session.commit()
             return '', 204
 
-        def put(self, contest_id):
+
+        # put -> update existing contest
+        def put(self, contestId):
+            # deserialize json :)
             args = parser.parse_args()
-            contest = {'title': args['title']}
-            contests[contest_id] = contest
-            return contest, 201
+            #save only the changed attributes
+            for k, v in args.iteritems():
+                if v is not None:
+                    # parse datetime back
+                    if isinstance(Contest.__table__.c[k].type,
+                            sqlalchemy.sql.sqltypes.DateTime):
+                        v = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
+                    db.session.query(Contest).filter_by(id=contestId).update({k:v})
+            db.session.commit()
+            return 201
 
     class ContestListApi(Resource):
         def get(self):
+            contests = {}
+            for c in Contest.query.all():
+                contest = prepare_dict_for_json(c.__dict__)
+                contests[contest['id']] = contest
             return contests
 
+        # post -> add new contest
         def post(self):
             args = parser.parse_args()
+            for k,v in args.iteritems():
+                if isinstance(Contest.__table__.c[k].type,
+                        sqlalchemy.sql.sqltypes.DateTime):
+                    args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
+            contest =  Contest(args)
+            db.session.add(contest)
+            db.session.commit()
+            return 201
 
-            # getting the id of the next contest -> database!
-            contest_id = int(max(contests.keys()).lstrip('title')) +1
-            contest_id = 'title%i' % todo_id
-            contests[contest_id] = {'title': args['title']}
-            return contests[contest_id], 201
 
-
-    api.add_resource(ContestApi, '/api/contests/<contest_id>')
+    api.add_resource(ContestApi, '/api/contests/<contestId>')
     api.add_resource(ContestListApi, '/api/contests')
 
 

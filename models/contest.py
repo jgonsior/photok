@@ -13,14 +13,9 @@ class Contest(db.Model):
     voteMethod = db.Column(db.String(255), nullable=False)
 
 
-    def __init__(self, headline, workingTitle, startDate, endDate, voteMethod, createdDate = None):
-        self.headline = headline
-        self.workingTitle = workingTitle
-
-        if createdDate is None:
-            createdDate = datetime.utcnow()
-
-        self.createdDate = createdDate
-        self.startDate = startDate
-        self.endDate = endDate
-        self.voteMethod = voteMethod
+    def __init__(self, args):
+        self.createdDate =  datetime.utcnow()
+        for k,v in args.iteritems():
+           # if k == "createdDate" and v is None:
+           #     v = datetime.utcnow()
+            setattr(self, k, v)
