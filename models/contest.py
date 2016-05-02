@@ -16,7 +16,7 @@ class Contest(db.Model):
     def __init__(self, headline, workingTitle, startDate, endDate, voteMethod, createdDate = None):
         self.headline = headline
         self.workingTitle = workingTitle
-        
+
         if createdDate is None:
             createdDate = datetime.utcnow()
 

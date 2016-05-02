@@ -2,7 +2,8 @@ import os
 from flask import Flask, render_template, request
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
-
+from pprint import pprint
+import json
 from wtforms.validators import ValidationError
 from models import db
 from models.contest import Contest
@@ -17,49 +18,9 @@ db.init_app(app)
 api = Api(app)
 
 
-contests = {
-        'contest1' : {'title': 'cont1'},
-        'contest2' : {'title': 'cont2'},
-        'contest3' : {'title': 'cont3'},
-        }
-
-parser = reqparse.RequestParser()
-parser.add_argument('title')
-
-class ContestApi(Resource):
-    def get(self, contest_id):
-        return contests[contest_id]
-
-    def delete(self, contest_id):
-        del contests[contest_id]
-        return '', 204
-
-    def put(self, contest_id):
-        args = parser.parse_args()
-        contest = {'title': args['title']}
-        contests[contest_id] = contest
-        return contest, 201
-
-class ContestListApi(Resource):
-    def get(self):
-        return contests
-
-    def post(self):
-        args = parser.parse_args()
-        contest_id = int(max(contests.keys()).lstrip('title')) +1
-        contest_id = 'title%i' % todo_id
-        contests[contest_id] = {'title': args['title']}
-        return contests[contest_id], 201
-
-
-api.add_resource(ContestApi, '/api/contest/<contest_id>')
-api.add_resource(ContestListApi, '/api/contests')
-
-
 with app.app_context():
     # Create all database tables
     db.create_all()
-
 
     def passwordValidator(form, field):
         password = field.data
@@ -82,11 +43,18 @@ with app.app_context():
         user1.roles.append(Role(name='admin'))
         user1.roles.append(Role(name='user'))
         db.session.add(user1)
-        
-        contest1 = Contest("Link\ouml;pings most beautifull spring flower", "spring contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
-        
-        db.session.add(contest1)
 
+
+        contest1 = Contest("Link\ouml;pings most beautifull spring flower", "spring contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
+        contest2 = Contest("Link\ouml;pings most beautifull autumn flower",
+                "summer contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
+        contest3 = Contest("Link\ouml;pings most beautifull winter flower",
+                "winter contest 2016", datetime.utcnow() + timedelta(days=10), datetime.utcnow() + timedelta(days=20), "simple")
+
+        db.session.add(contest1)
+        db.session.add(contest2)
+        db.session.add(contest3)
+ 
         image1 = Image("Tulip", "Gold", user1, contest1)
         image2 = Image("Sunflower", "Silver", user1, contest1)
         image3 = Image("Onion", "Bronze", user1, contest1)
@@ -102,6 +70,65 @@ with app.app_context():
         db.session.add(vote2)
         db.session.add(vote3)
         db.session.commit()
+
+
+    # 1. get contests from database
+    # 2. define all reqired arguments
+    # 3. create new contest
+    # 4. save contest to database :)
+
+    def serialize(model):
+        columns = [c.key for c in class_mapper(model.__class__).columns]
+        return dict((c, getattr(model,c)) for c in columns)
+    
+    contests = {}
+    for c in Contest.query.all(): 
+        contest = c.__dict__
+        del(contest['_sa_instance_state'])
+        for key, value in contest.iteritems():
+            if isinstance(value, datetime):
+                contest[key] = str(value)
+        contests[contest['id']] = contest
+
+
+    pprint(contests)
+
+
+    parser = reqparse.RequestParser()
+    parser.add_argument('title')
+
+    class ContestApi(Resource):
+        def get(self, contest_id):
+            return contests[contest_id]
+
+        def delete(self, contest_id):
+            del contests[contest_id]
+            return '', 204
+
+        def put(self, contest_id):
+            args = parser.parse_args()
+            contest = {'title': args['title']}
+            contests[contest_id] = contest
+            return contest, 201
+
+    class ContestListApi(Resource):
+        def get(self):
+            return contests
+
+        def post(self):
+            args = parser.parse_args()
+
+            # getting the id of the next contest -> database!
+            contest_id = int(max(contests.keys()).lstrip('title')) +1
+            contest_id = 'title%i' % todo_id
+            contests[contest_id] = {'title': args['title']}
+            return contests[contest_id], 201
+
+
+    api.add_resource(ContestApi, '/api/contests/<contest_id>')
+    api.add_resource(ContestListApi, '/api/contests')
+
+
 
 @app.route('/')
 def homepage():
