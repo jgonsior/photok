@@ -1,0 +1,63 @@
+<div class="row">
+    <form method="POST" action="/submit">
+        <div>
+            {{ form.headline.label }}:
+            {{ form.headline }}
+            {% if form.headline.errors %}
+                <ul class="errors">{% for error in form.headline.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.thumbnail.label }}:
+            {{ form.thumbnail }}
+            {% if form.thumbnail.errors %}
+                <ul class="errors">{% for error in form.thumbnail.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.theme.label }}:
+            {{ form.theme }}
+            {% if form.theme.errors %}
+                <ul class="errors">{% for error in form.theme.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.workingTitle.label }}:
+            {{ form.workingTitle }}
+            {% if form.workingTitle.errors %}
+                <ul class="errors">{% for error in form.workingTitle.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.description.label }}:
+            {{ form.description }}
+            {% if form.description.errors %}
+                <ul class="errors">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.startDate.label }}:
+            {{ form.startDate }}
+            {% if form.startDate.errors %}
+                <ul class="errors">{% for error in form.startDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.endDate.label }}:
+            {{ form.endDate }}
+            {% if form.endDate.errors %}
+                <ul class="errors">{% for error in form.endDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.onlyJuryVote.label }}:
+            {{ form.onlyJuryVote }}
+            {% if form.onlyJuryVote.errors %}
+                <ul class="errors">{% for error in form.onlyJuryVote.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div>
+            <input type="submit" value="Go">
+        </div>
+    </form>
+</div>

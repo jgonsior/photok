@@ -1,31 +1,38 @@
 <div class="container" style="margin-top:1em;">
-  <div class="header clearfix">
-    <nav>
-      <ul class="nav nav-pills pull-right">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
 
-        {% if active == "home" %}
-          <li role="presentation" class="active"><a href="/">Home</a></li>
-        {% else %}
-          <li role="presentation"><a href="/">Home</a></li>
-        {% endif %}
+                {% if active == "home" %}
+                <li role="presentation" class="active"><a href="/">Home</a></li>
+                {% else %}
+                <li role="presentation"><a href="/">Home</a></li>
+                {% endif %}
 
-        {% if active == "page" %}
-          <li role="presentation" class="active"><a href="/link">Admin</a></li>
-        {% else %}
-          <li role="presentation"><a href="/link">Admin</a></li>
-        {% endif %}
+                {% if active == "page" %}
+                <li role="presentation" class="active"><a href="/link">Admin</a></li>
+                {% else %}
+                <li role="presentation"><a href="/link">Admin</a></li>
+                {% endif %}
 
-        {% if active == "browse" %}
-          <li role="presentation" class="active"><a href="/">Browse</a></li>
-        {% else %}
-          <li role="presentation"><a href="/browse">Browse</a></li>
-        {% endif %}
 
-        <li role="presentation"><a href="/user/login">Login</a></li>
-        <li role="presentation"><a href="/user/logout">Logout</a></li>
-      </ul>
-    </nav>
-    <h3 class="text-muted">photok</h3>
-  </div>
-  <hr/>
+                {% if active == "create_contest" %}
+                <li role="presentation" class="active"><a href="/">Add contest</a></li>
+                {% else %}
+                <li role="presentation"><a href="/add">Add contest</a></li>
+                {% endif %}
+
+                {% if active == "browse" %}
+                <li role="presentation" class="active"><a href="/">Browse</a></li>
+                {% else %}
+                <li role="presentation"><a href="/browse">Browse</a></li>
+                {% endif %}
+
+                <li role="presentation"><a href="/user/login">Login</a></li>
+                <li role="presentation"><a href="/user/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">photok</h3>
+    </div>
+    <hr/>
 </div>
