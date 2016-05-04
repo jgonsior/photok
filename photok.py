@@ -10,7 +10,7 @@ from wtforms import Form, BooleanField, StringField, FileField, TextAreaField, v
 from models import db
 from models.contest import Contest, ContestApi, ContestListApi
 from models.vote import Vote
-from models.image import Image
+from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
 
@@ -47,7 +47,7 @@ with app.app_context():
         db.session.add(user1)
 
         argCon1 = {
-                "headline": "Link\ouml;pings most beautifull spring flower", 
+                "headline": "Link\ouml;pings most beautifull spring flower",
                 "workingTitle": "spring contest 2016",
                 "startDate": datetime.utcnow() + timedelta(days=10),
                 "endDate": datetime.utcnow() + timedelta(days=20),
@@ -96,7 +96,9 @@ with app.app_context():
 
     # define REST api entry points
     api.add_resource(ContestApi, '/api/contests/<contestId>')
+    api.add_resource(ImageApi, '/api/images/<imageId>')
     api.add_resource(ContestListApi, '/api/contests')
+    api.add_resource(ImageListApi, '/api/images')
 
 
 
