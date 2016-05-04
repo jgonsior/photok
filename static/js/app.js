@@ -1,7 +1,7 @@
 var photokApp = angular.module('photok', [
 	'ngRoute',
-	'phonecatControllers',
-	'phonecatServices'
+	'photokControllers',
+	'contestServices'
 ]);
 
 photokApp.config(['$interpolateProvider', '$routeProvider', function($interpolateProvider, $routeProvider) {
@@ -12,11 +12,11 @@ photokApp.config(['$interpolateProvider', '$routeProvider', function($interpolat
 	$interpolateProvider.endSymbol(']]');
 	
 	$routeProvider.when('/contests', {
-		templateUrl: 'partials/contest-list.html',
+		templateUrl: 'static/partials/contest-list.html',
 		controller: 'ContestListController'
 	}).
 	when('/contests/:contestId', {
-		templateUrl: 'partials/contest-detail.html',
+		templateUrl: 'static/partials/contest-detail.html',
 		controller: 'ContestDetailController'
 	}).
 	otherwise({
