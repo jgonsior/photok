@@ -9,7 +9,7 @@ from wtforms.fields.html5 import DateField
 from wtforms import Form, BooleanField, StringField, FileField, TextAreaField, validators
 from models import db
 from models.contest import Contest, ContestApi, ContestListApi
-from models.vote import Vote
+from models.vote import Vote, VoteApi, VoteListApi
 from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
@@ -96,10 +96,13 @@ with app.app_context():
 
     # define REST api entry points
     api.add_resource(ContestApi, '/api/contests/<contestId>')
-    api.add_resource(ImageApi, '/api/images/<imageId>')
     api.add_resource(ContestListApi, '/api/contests')
+
+    api.add_resource(ImageApi, '/api/images/<imageId>')
     api.add_resource(ImageListApi, '/api/images')
 
+    api.add_resource(VoteApi, '/api/votes/<voteId>')
+    api.add_resource(VoteListApi, '/api/votes')
 
 
 @app.route('/')
