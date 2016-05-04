@@ -1,5 +1,4 @@
 import os
-#import datetime
 from datetime import date
 from flask import Flask, render_template, request
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
@@ -35,6 +34,7 @@ with app.app_context():
 
 
     dbAdapter =  SQLAlchemyAdapter(db, User)
+
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
     # create some fake data for deveoloping
@@ -112,7 +112,7 @@ def browse_contests():
 
 @app.route('/contest')  # /<contestName>') TODO, load actual contest
 def view_contest():  # contestName): TODO, load actual contest
-    return render_template('pages/show_contest.html',active="")
+    return render_template('pages/show_contest.html',active="browse")
 
 
 @app.route('/add')
