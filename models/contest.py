@@ -75,10 +75,10 @@ class ContestApi(Resource):
 
 class ContestListApi(Resource):
     def get(self):
-        contests = {}
+        contests = []
         for c in Contest.query.all():
             contest = prepare_dict_for_json(c.__dict__)
-            contests[contest['id']] = contest
+            contests.append(contest)
         return contests
 
     # post -> add new contest
