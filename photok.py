@@ -127,8 +127,10 @@ def register():
         return 'success'
     return render_template('pages/create_contest.html', active="create_contest", form=form)
 
+
 @app.route('/contests')
 @app.route('/contests/<contestId>')
+@roles_required('user')
 def contests(contestId=''):
     return render_template('main.html', contestId = contestId)
 

@@ -92,4 +92,3 @@ class ContestListApi(Resource):
         db.session.add(contest)
         db.session.commit()
         return 201
-
