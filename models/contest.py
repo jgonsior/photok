@@ -16,18 +16,6 @@ class Contest(db.Model):
     voteMethod = db.Column(db.String(255), nullable=False)
 
 
-    def __init__(self, headline, workingTitle, startDate, endDate, voteMethod, createdDate = None):
-        self.headline = headline
-        self.workingTitle = workingTitle
-
-        if createdDate is None:
-            createdDate = datetime.utcnow()
-
-        self.createdDate = createdDate
-        self.startDate = startDate
-        self.endDate = endDate
-        self.voteMethod = voteMethod
-
     def __init__(self, args):
         self.createdDate =  datetime.utcnow()
         for k,v in args.iteritems():
@@ -87,10 +75,10 @@ class ContestApi(Resource):
 
 class ContestListApi(Resource):
     def get(self):
-        contests = {}
+        contests = []
         for c in Contest.query.all():
             contest = prepare_dict_for_json(c.__dict__)
-            contests[contest['id']] = contest
+            contests.append(contest)
         return contests
 
     # post -> add new contest

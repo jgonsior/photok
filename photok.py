@@ -112,7 +112,7 @@ def browse_contests():
 
 @app.route('/contest')  # /<contestName>') TODO, load actual contest
 def view_contest():  # contestName): TODO, load actual contest
-    return render_template('pages/show_contest.html',active="")
+    return render_template('pages/show_contest.html',active="browse")
 
 
 @app.route('/add')
@@ -127,6 +127,10 @@ def register():
         return 'success'
     return render_template('pages/create_contest.html', active="create_contest", form=form)
 
+@app.route('/contests')
+@app.route('/contests/<contestId>')
+def contests(contestId=''):
+    return render_template('main.html', contestId = contestId)
 
 @app.route('/link')
 @roles_required('admin')
