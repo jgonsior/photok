@@ -8,8 +8,8 @@ photokApp.config(['$interpolateProvider', '$routeProvider', function($interpolat
 	// avoid jinga / angular template conflict 
 	// {{}} is for jinga
 	// [[]] is for angular
-	$interpolateProvider.startSymbol('[[');
-	$interpolateProvider.endSymbol(']]');
+	//$interpolateProvider.startSymbol('[[');
+	//$interpolateProvider.endSymbol(']]');
 	
 	$routeProvider.when('/contests', {
 		templateUrl: 'static/partials/contest-list.html',

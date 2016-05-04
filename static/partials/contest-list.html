@@ -1,28 +1,26 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-2">
-      <!--Sidebar content-->
+<div class="row">
+	<div class="col-md-2">
+		<!--Sidebar content-->
 
-      Search: <input ng-model="query">
-      Sort by:
-      <select ng-model="orderProp">
-        <option value="name">Alphabetical</option>
-        <option value="age">Newest</option>
-      </select>
+		Search: <input ng-model="query">
+		Sort by:
+		<select ng-model="orderProp">
+			<option value="headline">Alphabetical</option>
+			<option value="createdDate">Newest</option>
+		</select>
 
-    </div>
-    <div class="col-md-10">
-      <!--Body content-->
+	</div>
+	<div class="col-md-10">
+		<!--Body content-->
 
-      <ul class="phones">
-        <li ng-repeat="phone in phones | filter:query | orderBy:orderProp"
-            class="thumbnail phone-listing">
-          <a href="#/phones/{{phone.id}}" class="thumb"><img ng-src="{{phone.imageUrl}}" alt="{{phone.name}}"></a>
-          <a href="#/phones/{{phone.id}}">{{phone.name}}</a>
-          <p>{{phone.snippet}}</p>
-        </li>
-      </ul>
+		<ul class="contests">
+			<li ng-repeat="contest in contests | filter:query | orderBy:orderProp"
+			 class="thumbnail contest-listing">
+				<a href="#/contests/{{contest.id}}">
+					<img class="img-responsive" src="http://placehold.it/400x300" alt="">
+					<span>{{contest.id}} | {{contest.headline}}</span></a>
+			</li>
+		</ul>
 
-    </div>
-  </div>
+	</div>
 </div>
