@@ -67,9 +67,9 @@ class ImageApi(Resource):
         return 201
 
 class ImageListApi(Resource):
-    def get(self):
+    def get(self, contestId):
         images = {}
-        for c in Image.query.all():
+        for c in Image.query.filter(Image.contestId == contestId):
             image = prepare_dict_for_json(c.__dict__)
             images[image['id']] = image
         return images

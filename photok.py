@@ -99,7 +99,7 @@ with app.app_context():
     api.add_resource(ContestListApi, '/api/contests')
 
     api.add_resource(ImageApi, '/api/images/<imageId>')
-    api.add_resource(ImageListApi, '/api/images')
+    api.add_resource(ImageListApi, '/api/images/contest/<contestId>')
 
     api.add_resource(VoteApi, '/api/votes/<voteId>')
     api.add_resource(VoteListApi, '/api/votes')

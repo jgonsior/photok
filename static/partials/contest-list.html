@@ -1,26 +1,30 @@
-<div class="row">
-	<div class="col-md-2">
-		<!--Sidebar content-->
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Search for stuff</div>
+				<div class="panel-body">
+					Search: <input ng-model="query">
+					Sort by:
+					<select ng-model="orderProp">
+						<option value="headline">Alphabetical</option>
+						<option value="createdDate">Newest</option>
+					</select>
+				</div>
+			</div>
 
-		Search: <input ng-model="query">
-		Sort by:
-		<select ng-model="orderProp">
-			<option value="headline">Alphabetical</option>
-			<option value="createdDate">Newest</option>
-		</select>
+		</div>
+		<!-- end of col -->
 
-	</div>
-	<div class="col-md-10">
-		<!--Body content-->
-
-		<ul class="contests">
-			<li ng-repeat="contest in contests | filter:query | orderBy:orderProp"
-			 class="thumbnail contest-listing">
-				<a href="#/contests/{{contest.id}}">
-					<img class="img-responsive" src="http://placehold.it/400x300" alt="">
-					<span>{{contest.id}} | {{contest.headline}}</span></a>
-			</li>
-		</ul>
+		<div class="col-md-3" ng-repeat="contest in contests | filter:query | orderBy:orderProp"
+		 class="thumbnail contest-listing">
+			<a href="#/contests/{{contest.id}}">
+				<img class="img-responsive" src="http://placehold.it/400x300" alt="">
+				<span>{{contest.id}} | {{contest.headline}}</span>
+			</a>
+		</div>
+		<!-- end of col -->
 
 	</div>
 </div>
+<!-- end of container -->
