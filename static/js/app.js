@@ -2,8 +2,8 @@
 
 var photokApp = angular.module('photok', [
 	'ngRoute',
-	'photokControllers',
-	'contestServices'
+	'contestServices',
+	'photokControllers'
 ]);
 
 photokApp.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
