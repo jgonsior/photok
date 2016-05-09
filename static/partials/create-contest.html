@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2>Create a contest</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p><hr/>
+
+  </div>
+    <form method="POST" action="/submit">
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="">{{ form.headline.label }}</label><br/>
+            {{ form.headline }}
+            {% if form.headline.errors %}
+                <ul class="errors">{% for error in form.headline.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.thumbnail.label }}</label><br/>
+            {{ form.thumbnail }}
+            {% if form.thumbnail.errors %}
+                <ul class="errors">{% for error in form.thumbnail.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.theme.label }}</label><br/>
+            {{ form.theme }}
+            {% if form.theme.errors %}
+                <ul class="errors">{% for error in form.theme.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.workingTitle.label }}</label><br/>
+            {{ form.workingTitle }}
+            {% if form.workingTitle.errors %}
+                <ul class="errors">{% for error in form.workingTitle.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+            <label for="">{{ form.description.label }}</label><br/>
+            {{ form.description }}
+            {% if form.description.errors %}
+                <ul class="errors">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.startDate.label }}</label><br/>
+            {{ form.startDate }}
+            {% if form.startDate.errors %}
+                <ul class="errors">{% for error in form.startDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.endDate.label }}</label><br/>
+            {{ form.endDate }}
+            {% if form.endDate.errors %}
+                <ul class="errors">{% for error in form.endDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="">{{ form.onlyJuryVote.label }}</label>
+            {{ form.onlyJuryVote }}
+            {% if form.onlyJuryVote.errors %}
+                <ul class="errors">{% for error in form.onlyJuryVote.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit">
+        </div>
+      </div>
+    </form>
+</div>
