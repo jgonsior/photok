@@ -1,73 +1,93 @@
 <div class="row">
+
   <div class="col-md-12">
     <h2>Create a contest</h2>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p><hr/>
-
   </div>
-    <form method="POST" action="/submit">
-      <div class="col-md-6">
-        <div class="form-group">
-            <label for="">{{ form.headline.label }}</label><br/>
-            {{ form.headline }}
-            {% if form.headline.errors %}
-                <ul class="errors">{% for error in form.headline.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.thumbnail.label }}</label><br/>
-            {{ form.thumbnail }}
-            {% if form.thumbnail.errors %}
-                <ul class="errors">{% for error in form.thumbnail.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.theme.label }}</label><br/>
-            {{ form.theme }}
-            {% if form.theme.errors %}
-                <ul class="errors">{% for error in form.theme.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.workingTitle.label }}</label><br/>
-            {{ form.workingTitle }}
-            {% if form.workingTitle.errors %}
-                <ul class="errors">{% for error in form.workingTitle.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
+
+  <div class="col-md-12" ng-controller="CreateContestController">
+    <form name="form" class="css-form" novalidate>
+
+      <div class="form-group">
+        <label for="headline">Headline*</label>
+        <input type="text" ng-model="contest.headline" name="headline" required="" placeholder="Headline"/>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-            <label for="">{{ form.description.label }}</label><br/>
-            {{ form.description }}
-            {% if form.description.errors %}
-                <ul class="errors">{% for error in form.description.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.startDate.label }}</label><br/>
-            {{ form.startDate }}
-            {% if form.startDate.errors %}
-                <ul class="errors">{% for error in form.startDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.endDate.label }}</label><br/>
-            {{ form.endDate }}
-            {% if form.endDate.errors %}
-                <ul class="errors">{% for error in form.endDate.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="">{{ form.onlyJuryVote.label }}</label>
-            {{ form.onlyJuryVote }}
-            {% if form.onlyJuryVote.errors %}
-                <ul class="errors">{% for error in form.onlyJuryVote.errors %}<li>{{ error }}</li>{% endfor %}</ul>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Submit">
-        </div>
+      <div ng-show="form.$submitted || form.headline.$touched">
+        <div ng-show="form.headline.$error.required" class="alert alert-danger">What is the headline of your contest?</div>
       </div>
+
+      <div class="form-group">
+        <label for="theme">Theme*</label>
+        <input type="text" ng-model="contest.theme" name="theme" required="" placeholder="theme"/>
+      </div>
+      <div ng-show="form.$submitted || form.theme.$touched">
+        <div ng-show="form.theme.$error.required" class="alert alert-danger">What is the theme of your contest?</div>
+      </div>
+
+      <div class="form-group">
+        <label for="workingtitle">Working title*</label>
+        <input type="text" ng-model="contest.workingtitle" name="workingtitle" required="" placeholder="Working title"/>
+      </div>
+      <div ng-show="form.$submitted || form.workingtitle.$touched">
+        <div ng-show="form.workingtitle.$error.required" class="alert alert-danger">What is the working title of your contest?</div>
+      </div>
+
+      <!-- ... http://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
+      <div class="form-group">
+        <label for="headline">Image*</label>
+        <input type="file" ng-model="contest.image" name="image" required="" placeholder="Image"/>
+      </div>
+      <div ng-show="form.$submitted || form.image.$touched">
+        <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your contest?</div>
+      </div>-->
+
+      <div class="form-group">
+        <label for="description">Description*</label>
+        <input type="text" ng-model="contest.description" name="description" required="" placeholder="Description"/>
+      </div>
+      <div ng-show="form.$submitted || form.description.$touched">
+        <div ng-show="form.description.$error.required" class="alert alert-danger">What is the description of your contest?</div>
+      </div>
+
+      <div class="form-group">
+        <label for="startdate">Start date*</label>
+        <input type="date" ng-model="contest.startdate" name="startdate" required="" placeholder="YYYY-MM-DD"/>
+      </div>
+      <div ng-show="form.$submitted || form.startdate.$touched">
+        <div ng-show="form.startdate.$error.required" class="alert alert-danger">What is the startdate of your contest?</div>
+        <div ng-show="!form.startdate.$valid" class="alert alert-danger">The date doesn't seem valid</div>
+      </div>
+
+      <div class="form-group">
+        <label for="enddate">End date*</label>
+        <input type="date" ng-model="contest.enddate" name="enddate" required="" placeholder="YYYY-MM-DD"/>
+      </div>
+      <div ng-show="form.$submitted || form.enddate.$touched">
+        <div ng-show="form.enddate.$error.required" class="alert alert-danger">What is the end date of your contest?</div>
+        <div ng-show="!form.enddate.$valid" class="alert alert-danger">The date doesn't seem valid</div>
+      </div>
+
+      <!--
+      <tt>value = {{example.value | date: "yyyy-MM-dd"}}</tt><br/>
+      <tt>form.enddate.$valid = {{form.enddate.$valid}}</tt><br/>
+      <tt>form.enddate.$error = {{form.enddate.$error}}</tt><br/>
+      <tt>form.$valid = {{form.$valid}}</tt><br/>
+      <tt>form.$error.required = {{!!form.$error.required}}</tt><br/>
+      -->
+
+
+      <div class="form-group">
+        <label for="description">Only jury can vote</label>
+        <input type="checkbox" ng-model="contest.onlyJury" name="userAgree" required="" />
+      </div>
+
+      <input type="button" ng-click="reset(form)" value="Reset" />
+      <input type="submit" ng-click="update(contest)" value="Save" />
     </form>
+    <pre>contest = {{contest | json}}</pre>
+    <pre>master = {{master | json}}</pre>
+  </div>
+
+
 </div>
