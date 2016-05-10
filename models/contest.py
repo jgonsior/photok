@@ -4,6 +4,7 @@ from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
 import sqlalchemy
 
+
 class Contest(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,17 +20,15 @@ class Contest(db.Model):
     def __init__(self, args):
         self.createdDate =  datetime.utcnow()
         for k,v in args.iteritems():
-           # if k == "createdDate" and v is None:
-           #     v = datetime.utcnow()
+            # if k == "createdDate" and v is None:
+            #     v = datetime.utcnow()
             setattr(self, k, v)
-
-
-
 
 # 1. get contests from database
 # 2. define all reqired arguments
 # 3. create new contest
 # 4. save contest to database :)
+
 
 # converts f.e. datetime objects to strings
 def prepare_dict_for_json(d):
@@ -57,12 +56,11 @@ class ContestApi(Resource):
         db.session.commit()
         return '', 204
 
-
     # put -> update existing contest
     def put(self, contestId):
         # deserialize json :)
         args = parser.parse_args()
-        #save only the changed attributes
+        # save only the changed attributes
         for k, v in args.iteritems():
             if v is not None:
                 # parse datetime back
@@ -72,6 +70,7 @@ class ContestApi(Resource):
                 db.session.query(Contest).filter_by(id=contestId).update({k:v})
         db.session.commit()
         return 201
+
 
 class ContestListApi(Resource):
     def get(self):

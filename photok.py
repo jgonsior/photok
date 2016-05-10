@@ -33,15 +33,14 @@ with app.app_context():
             raise ValidationError('Password must have at least 3 characters')
 
 
-    dbAdapter =  SQLAlchemyAdapter(db, User)
+    dbAdapter = SQLAlchemyAdapter(db, User)
 
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
     # create some fake data for deveoloping
     # Create a test user/admin
-    if not User.query.filter(User.username=='test').first():
-        user1 = User(username='test', email='test@example.com', active=True,
-                password=userManager.hash_password('test'))
+    if not User.query.filter(User.username == 'test').first():
+        user1 = User(username='test', email='test@example.com', active=True, password=userManager.hash_password('test'))
         user1.roles.append(Role(name='admin'))
         user1.roles.append(Role(name='user'))
         db.session.add(user1)
@@ -107,17 +106,17 @@ with app.app_context():
 
 @app.route('/')
 def homepage():
-    return render_template('pages/homepage.html',active="home")
+    return render_template('pages/homepage.html', active="home")
 
 
 @app.route('/browse')
 def browse_contests():
-    return render_template('pages/browse.html',active="browse")
+    return render_template('pages/browse.html', active="browse")
 
 
 @app.route('/contest')  # /<contestName>') TODO, load actual contest
 def view_contest():  # contestName): TODO, load actual contest
-    return render_template('pages/show_contest.html',active="browse")
+    return render_template('pages/show_contest.html', active="browse")
 
 
 @app.route('/add')
@@ -137,12 +136,13 @@ def register():
 @app.route('/contests/<contestId>')
 @roles_required('user')
 def contests(contestId=''):
-    return render_template('main.html', contestId = contestId)
+    return render_template('main.html', contestId=contestId)
+
 
 @app.route('/link')
 @roles_required('admin')
 def link():
-    return render_template('pages/page.html',active="page")
+    return render_template('pages/page.html', active="page")
 
 
 class CreateContestForm(Form):

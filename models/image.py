@@ -3,6 +3,7 @@ from datetime import datetime
 
 from flask_restful import reqparse, Resource
 
+
 class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +20,6 @@ class Image(db.Model):
 
     contestId = db.Column(db.Integer, db.ForeignKey('contest.id', ondelete='CASCADE'))
     contest = db.relationship('Contest', backref=db.backref('Image', lazy='dynamic'))
-
 
     def __init__(self, title, prize, user, contest, uploadedOn=None, exifData=None):
         self.title = title
@@ -41,6 +41,7 @@ def prepare_dict_for_json(d):
             d[k] = str(v)
     return d
 
+
 class ImageApi(Resource):
     def get(self, imageId):
         return prepare_dict_for_json(Image.query.get(imageId).__dict__)
@@ -55,7 +56,7 @@ class ImageApi(Resource):
     def put(self, imageId):
         # deserialize json :)
         args = parser.parse_args()
-        #save only the changed attributes
+        # save only the changed attributes
         for k, v in args.iteritems():
             if v is not None:
                 # parse datetime back
@@ -65,6 +66,7 @@ class ImageApi(Resource):
                 db.session.query(Image).filter_by(id=imageId).update({k:v})
         db.session.commit()
         return 201
+
 
 class ImageListApi(Resource):
     def get(self, contestId):
