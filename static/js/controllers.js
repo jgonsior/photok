@@ -2,6 +2,14 @@ var photokControllers = angular.module('photokControllers', [
 	'contestServices'
 ]);
 
+
+photokControllers.controller('HeaderController', ['$scope', '$location',
+function($scope, $location) {
+	$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+	};
+}]);
+
 photokControllers.controller('ContestListController', ['$scope', 'Contest',
 function($scope, Contest) {
 	$scope.contests = Contest.query();
@@ -50,8 +58,7 @@ function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
     ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data","1","1")
       // handle success
       .then(function () {
-				alert('It worked!');
-
+				alert('CONTROLLER: Success');
       })
       // handle error
       .catch(function () {

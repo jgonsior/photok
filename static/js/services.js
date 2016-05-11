@@ -7,13 +7,13 @@ function ($q, $timeout, $http){
       sendImage: sendImage
     });
 
-	function sendImage(title, path, exif, contest, user) {
-		var deferred = $q.defer();
 
-		$http.post('/api/images/contest/1', {title: title, path: path, exifData: exif, contestId: contest, userId: user, prize: "Nothing"})
+	function sendImage(title, exif, contest, user) {
+		var deferred = $q.defer();
+		$http.post('/api/images/contest/1', {title: title, exifData: exif, contestId: contest, userId: user, prize: "Nothing"})
 			// handle success
 			.success(function (data, status) {
-				if(status === 200 && data.result){
+				if(status === 200 /*&& data.result*/){
 					image = true;
 					alert('SERVICE: Success');
 					deferred.resolve();

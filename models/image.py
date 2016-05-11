@@ -12,7 +12,6 @@ class Image(db.Model):
     uploadedOn = db.Column(db.DateTime(), nullable=False)
 
     title = db.Column(db.String(255), nullable=False)
-    path = db.Column(db.String(255), nullable=False)
     exifData = db.Column(db.Text)
     prize = db.Column(db.String(255), nullable=False)
 
@@ -61,7 +60,7 @@ class ImageApi(Resource):
     def put(self, imageId):
         # deserialize json :)
         args = parser.parse_args()
-        # save only the changed attributes
+        #save only the changed attributes
         for k, v in args.iteritems():
             if v is not None:
                 # parse datetime back
@@ -71,7 +70,6 @@ class ImageApi(Resource):
                 db.session.query(Image).filter_by(id=imageId).update({k:v})
         db.session.commit()
         return 201
-
 
 class ImageListApi(Resource):
     def get(self, contestId):
