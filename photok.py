@@ -1,6 +1,6 @@
 import os
 from datetime import date
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file, make_response
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
 from wtforms.validators import ValidationError
@@ -8,8 +8,8 @@ from wtforms.fields.html5 import DateField
 from wtforms import Form, BooleanField, StringField, FileField, TextAreaField, validators
 from models import db
 from models.contest import Contest, ContestApi, ContestListApi
-from models.vote import Vote
-from models.image import Image
+from models.vote import Vote, VoteApi, VoteListApi
+from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
 
@@ -47,7 +47,7 @@ with app.app_context():
         db.session.add(user1)
 
         argCon1 = {
-                "headline": "Link\ouml;pings most beautifull spring flower", 
+                "headline": "Link\ouml;pings most beautifull spring flower",
                 "workingTitle": "spring contest 2016",
                 "startDate": datetime.utcnow() + timedelta(days=10),
                 "endDate": datetime.utcnow() + timedelta(days=20),
@@ -98,26 +98,23 @@ with app.app_context():
     api.add_resource(ContestApi, '/api/contests/<contestId>')
     api.add_resource(ContestListApi, '/api/contests')
 
+    api.add_resource(ImageApi, '/api/images/<imageId>')
+    api.add_resource(ImageListApi, '/api/images/contest/<contestId>')
+
+    api.add_resource(VoteApi, '/api/votes/<voteId>')
+    api.add_resource(VoteListApi, '/api/votes')
 
 
 @app.route('/')
-def homepage():
-    return render_template('pages/homepage.html',active="home")
-
-
-@app.route('/browse')
-def browse_contests():
-    return render_template('pages/browse.html',active="browse")
-
-
-@app.route('/contest')  # /<contestName>') TODO, load actual contest
-def view_contest():  # contestName): TODO, load actual contest
-    return render_template('pages/show_contest.html',active="browse")
+@app.route('/admin')
+def basic_pages(**kwargs):
+    return render_template('main.html')
 
 
 @app.route('/add')
 def create_contest():
-    return render_template('pages/create_contest.html', active="create_contest", form=CreateContestForm())
+    return make_response(open('templates/main.html').read())
+    #return render_template('pages/create_contest.html', active="create_contest", form=CreateContestForm())
 
 
 @app.route('/submit', methods=['GET', 'POST'])
@@ -133,11 +130,6 @@ def register():
 @roles_required('user')
 def contests(contestId=''):
     return render_template('main.html', contestId = contestId)
-
-@app.route('/link')
-@roles_required('admin')
-def link():
-    return render_template('pages/page.html',active="page")
 
 
 class CreateContestForm(Form):
