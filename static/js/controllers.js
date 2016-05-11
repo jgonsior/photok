@@ -2,6 +2,14 @@ var photokControllers = angular.module('photokControllers', [
 	'contestServices'
 ]);
 
+
+photokControllers.controller('HeaderController', ['$scope', '$location',
+function($scope, $location) {
+	$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+	};
+}]);
+
 photokControllers.controller('ContestListController', ['$scope', 'Contest',
 function($scope, Contest) {
 	$scope.contests = Contest.query();
