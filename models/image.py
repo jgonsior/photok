@@ -1,7 +1,10 @@
 from models import db
 from datetime import datetime
-
 from flask_restful import reqparse, Resource
+from sqlalchemy.orm import class_mapper
+import sqlalchemy
+from models.user import User
+
 
 
 class Image(db.Model):
@@ -11,6 +14,7 @@ class Image(db.Model):
     uploadedOn = db.Column(db.DateTime(), nullable=False)
 
     title = db.Column(db.String(255), nullable=False)
+    path = db.Column(db.String(255), nullable=False)
     exifData = db.Column(db.Text)
     prize = db.Column(db.String(255), nullable=False)
 
@@ -21,16 +25,13 @@ class Image(db.Model):
     contestId = db.Column(db.Integer, db.ForeignKey('contest.id', ondelete='CASCADE'))
     contest = db.relationship('Contest', backref=db.backref('Image', lazy='dynamic'))
 
-    def __init__(self, title, prize, user, contest, uploadedOn=None, exifData=None):
-        self.title = title
-        self.prize = prize
-        self.user = user
 
-        if uploadedOn is None:
-            uploadedOn = datetime.utcnow()
-        self.uploadedOn = uploadedOn
-
-        self.exifData = exifData
+    def __init__(self, args):
+        self.createdDate =  datetime.utcnow()
+        for k,v in args.iteritems():
+           if k == "uploadedOn" and v is None:
+               v = datetime.utcnow()
+           setattr(self, k, v)
 
 
 # converts f.e. datetime objects to strings
@@ -40,6 +41,13 @@ def prepare_dict_for_json(d):
         if isinstance(v, datetime):
             d[k] = str(v)
     return d
+
+
+parser = reqparse.RequestParser()
+# accept in a magical way all properties of our model :)
+for prop in class_mapper(Image).iterate_properties:
+    if isinstance(prop, sqlalchemy.orm.ColumnProperty):
+        parser.add_argument(str(prop).replace("Image.", ""))
 
 
 class ImageApi(Resource):
@@ -77,13 +85,17 @@ class ImageListApi(Resource):
         return images
 
     # post -> add new image
-    def post(self):
+    def post(self, contestId):
         args = parser.parse_args()
+
         for k,v in args.iteritems():
             if isinstance(Image.__table__.c[k].type,
                     sqlalchemy.sql.sqltypes.DateTime):
-                args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
-        image =  Image(args)
+                if v != None:
+                    args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
+
+        image = Image(args)
+
         db.session.add(image)
         db.session.commit()
         return 201

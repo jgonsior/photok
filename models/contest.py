@@ -16,7 +16,6 @@ class Contest(db.Model):
     endDate = db.Column(db.DateTime(), nullable=False)
     voteMethod = db.Column(db.String(255), nullable=False)
 
-
     def __init__(self, args):
         self.createdDate =  datetime.utcnow()
         for k,v in args.iteritems():
