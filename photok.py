@@ -33,15 +33,14 @@ with app.app_context():
             raise ValidationError('Password must have at least 3 characters')
 
 
-    dbAdapter =  SQLAlchemyAdapter(db, User)
+    dbAdapter = SQLAlchemyAdapter(db, User)
 
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
-    # create some fake data for deveoloping
+    # create some fake data for developing
     # Create a test user/admin
-    if not User.query.filter(User.username=='test').first():
-        user1 = User(username='test', email='test@example.com', active=True,
-                password=userManager.hash_password('test'))
+    if not User.query.filter(User.username == 'test').first():
+        user1 = User(username='test', email='test@example.com', active=True, password=userManager.hash_password('test'))
         user1.roles.append(Role(name='admin'))
         user1.roles.append(Role(name='user'))
         db.session.add(user1)
@@ -78,9 +77,9 @@ with app.app_context():
         db.session.add(contest2)
         db.session.add(contest3)
 
-        image1 = Image("Tulip", "Gold", user1, contest1)
-        image2 = Image("Sunflower", "Silver", user1, contest1)
-        image3 = Image("Onion", "Bronze", user1, contest1)
+        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "pathname001", 'prize': "Gold", 'userId': 1, 'contestId': 1})
+        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "pathname002", 'prize': "Silver", 'userId': 2, 'contestId': 1})
+        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "pathname003", 'prize': "Bronze", 'userId': 3, 'contestId': 1})
         db.session.add(image1)
         db.session.add(image2)
         db.session.add(image3)
