@@ -1,6 +1,6 @@
 import os
 from datetime import date
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file, make_response
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
 from wtforms.validators import ValidationError
@@ -106,23 +106,15 @@ with app.app_context():
 
 
 @app.route('/')
-def homepage():
-    return render_template('pages/homepage.html',active="home")
-
-
-@app.route('/browse')
-def browse_contests():
-    return render_template('pages/browse.html',active="browse")
-
-
-@app.route('/contest')  # /<contestName>') TODO, load actual contest
-def view_contest():  # contestName): TODO, load actual contest
-    return render_template('pages/show_contest.html',active="browse")
+@app.route('/admin')
+def basic_pages(**kwargs):
+    return render_template('main.html')
 
 
 @app.route('/add')
 def create_contest():
-    return render_template('pages/create_contest.html', active="create_contest", form=CreateContestForm())
+    return make_response(open('templates/main.html').read())
+    #return render_template('pages/create_contest.html', active="create_contest", form=CreateContestForm())
 
 
 @app.route('/submit', methods=['GET', 'POST'])
@@ -135,14 +127,8 @@ def register():
 
 @app.route('/contests')
 @app.route('/contests/<contestId>')
-@roles_required('user')
 def contests(contestId=''):
     return render_template('main.html', contestId = contestId)
-
-@app.route('/link')
-@roles_required('admin')
-def link():
-    return render_template('pages/page.html',active="page")
 
 
 class CreateContestForm(Form):
