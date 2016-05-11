@@ -107,14 +107,9 @@ with app.app_context():
 
 @app.route('/')
 @app.route('/admin')
+@app.route('/add')
 def basic_pages(**kwargs):
     return render_template('main.html')
-
-
-@app.route('/add')
-def create_contest():
-    return make_response(open('templates/main.html').read())
-    #return render_template('pages/create_contest.html', active="create_contest", form=CreateContestForm())
 
 
 @app.route('/submit', methods=['GET', 'POST'])
@@ -127,7 +122,6 @@ def register():
 
 @app.route('/contests')
 @app.route('/contests/<contestId>')
-@roles_required('user')
 def contests(contestId=''):
     return render_template('main.html', contestId = contestId)
 
