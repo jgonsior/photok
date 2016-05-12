@@ -11,6 +11,7 @@ class Image(db.Model):
 
     uploadedOn = db.Column(db.DateTime(), nullable=False)
 
+    path = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     exifData = db.Column(db.Text)
     prize = db.Column(db.String(255), nullable=False)

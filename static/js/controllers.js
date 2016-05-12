@@ -44,9 +44,9 @@ function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
 	$scope.sendImage = function () {
 
 		alert("SENDING: "+$scope.participation.title);
-		alert("got image: "+$scope.participation.image);
+		//alert("got image: "+$scope.participation.image);
 
-    // generate a token functions TODO: move this somewhere else?
+    // generate a token functions
     var rand = function() {
         return Math.random().toString(36).substr(2); // remove `0.`
     };

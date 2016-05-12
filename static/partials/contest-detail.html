@@ -82,7 +82,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
     <div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in images">
         <a class="thumbnail" href="#">
-            <img class="img-responsive" src="http://placehold.it/400x300" alt="">
+            <img class="img-responsive" src="{{i.path}}" alt="">
         </a>
         <h4 class="text-center">{{i.title}}</h4>
         <ul>
@@ -98,18 +98,14 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
         <a class="thumbnail" href="#">
             <img class="img-responsive" src="http://placehold.it/400x300" alt="">
         </a>
-        <h4 class="text-center">FAKE_DATA_002</h4>
+        <h4 class="text-center">FAKE_DATA_001</h4>
+        <ul>
+          <li><b>real data</b></li>
+          <li>title: fake_title</li>
+          <li>id: 000</li>
+          <li>uploadedOn: fake_date</li>
+          <li>userId: 000</li>
+        </ul>
     </div>
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb">
-        <a class="thumbnail" href="#">
-            <img class="img-responsive" src="http://placehold.it/400x300" alt="">
-        </a>
-        <h4 class="text-center">FAKE_DATA_003</h4>
-    </div>
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb">
-        <a class="thumbnail" href="#">
-            <img class="img-responsive" src="http://placehold.it/400x300" alt="">
-        </a>
-        <h4 class="text-center">FAKE_DATA_004</h4>
-    </div>
+
 </div>
