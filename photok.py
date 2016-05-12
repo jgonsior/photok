@@ -79,8 +79,8 @@ with app.app_context():
         db.session.add(contest3)
 
         image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': "Gold", 'userId': 1, 'contestId': 1})
-        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': "Silver", 'userId': 2, 'contestId': 1})
-        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': "Bronze", 'userId': 3, 'contestId': 1})
+        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': "Silver", 'userId': 1, 'contestId': 1})
+        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': "Bronze", 'userId': 1, 'contestId': 1})
         db.session.add(image1)
         db.session.add(image2)
         db.session.add(image3)
