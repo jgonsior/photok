@@ -75,13 +75,14 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 	$scope.reset();
 	// ! form
 
-	$scope.add = function(){
-		console.log($scope.participations);
+	$scope.add = function(t,i,e,c,u){
 		$scope.participations.push({
-			id: 123123,
-			title: "title",
-			uploadedOn: "?",
-			userId: 1
+			id: "?", // TODO : could this be a problem?
+			title: t,
+			uploadedOn: "Right now!",
+			userId: u,
+			exifData: e,
+			path: i
 		});
 	}
 
@@ -104,17 +105,18 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
     ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data",contest,"1")
       // handle success
       .then(function () {
-				alert('CONTROLLER: Success');
+				alert('Success');
       })
       // handle error
       .catch(function () {
         //$scope.error = true;
-        alert('CONTROLLER: Error');
+        alert('Error');
       });
 
-			alert("SENDING: Done");
-
-			$scope.add();
+			// Add the image to the view
+			// TODO: maybe try to get the *id* from the call above
+			$scope.add($scope.participation.title, "static/images/"+token(), "exif-fake-data",contest,"1");
+			$scope.participate = false;
   };
 
 }]);
