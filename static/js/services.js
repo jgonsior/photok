@@ -11,19 +11,16 @@ function ($q, $timeout, $http){
 		$http.post('/api/images/contest/1', {title: title, path: path, exifData: exif, contestId: contest, userId: user, prize: "Nothing"})
 			// handle success
 			.success(function (data, status) {
-				if(status === 200 /*&& data.result*/){
+				if(status === 200){
 					image = true;
-					//alert('SERVICE: Success');
 					deferred.resolve();
 				} else {
-					//alert('SERVICE: Success, but wrong status returned');
 					image = false;
 					deferred.reject();
 				}
 			})
 			// handle error
 			.error(function (data) {
-				//alert('SERVICE: Error');
 				image = false;
 				deferred.reject();
 			});
@@ -45,17 +42,14 @@ function ($q, $timeout, $http, $resource){
 		$http.post('/api/contests', {headline: headline, workingTitle: workingTitle, startDate: "2016-01-12 13:01:54.411227",endDate:"2016-01-12 13:01:54.411227", createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
 			// handle success
 			.success(function (data, status) {
-				if(status === 200 /*&& data.result*/){
-					alert('SERVICE: Success');
+				if(status === 200){
 					deferred.resolve();
 				} else {
-					alert('SERVICE: Success, but wrong status returned');
 					deferred.reject();
 				}
 			})
 			// handle error
 			.error(function (data) {
-				alert('SERVICE: Error');
 				deferred.reject();
 			});
 

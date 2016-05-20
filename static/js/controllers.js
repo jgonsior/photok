@@ -41,13 +41,20 @@ function($http, $scope, Contest) {
 photokControllers.controller('ContestDetailController', ['$http', '$scope', '$routeParams', 'Contest', 'ContestImages','ImageParticipation',
 function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation) {
 
+	var contest = $routeParams.contestId;
+
 	// Get the data for the contest
-	$http.get('api/contests/'+$routeParams.contestId).success(function(data) {
-  	$scope.contest = data;
+	$http.get('api/contests/' + contest).success(function(result) {
+  	$scope.contest = result;
 	});
 
 	// Get the images for the contest
-	$scope.images = ContestImages.get({contestId: $routeParams.contestId}, function(contest) {
+	// store them in an array so that we can use .push() after the form is sent
+	$scope.participations = [];
+	$http.get('api/images/contest/' + contest).success(function(result) {
+			angular.forEach(result, function(value, key) {
+				$scope.participations.push(value);
+			});
 	});
 
 	// Form for participation
@@ -68,10 +75,20 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 	$scope.reset();
 	// ! form
 
+	$scope.add = function(){
+		console.log($scope.participations);
+		$scope.participations.push({
+			id: 123123,
+			title: "title",
+			uploadedOn: "?",
+			userId: 1
+		});
+	}
+
 	// Function called when form is sent
 	$scope.sendImage = function () {
 
-		alert("SENDING: "+$scope.participation.title);
+		alert("SENDING: "+$scope.participation.title+" for contest #"+$routeParams.contestId);
 		//alert("got image: "+$scope.participation.image);
 
     // generate a token functions
@@ -84,7 +101,7 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
     };
 
     // Call the service function that will connect with the API
-    ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data","1","1")
+    ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data",contest,"1")
       // handle success
       .then(function () {
 				alert('CONTROLLER: Success');
@@ -96,6 +113,8 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
       });
 
 			alert("SENDING: Done");
+
+			$scope.add();
   };
 
 }]);

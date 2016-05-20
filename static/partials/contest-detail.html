@@ -72,6 +72,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
   				<li><b>Voting possible until:</b> {{contest.endDate}}</li>
         </ul>
         <a href="" ng-click="participate=true"><button type="button" class="btn btn-success">Participate</button></a>
+        <a href="" ng-click="add()"><button type="button" class="btn btn-warning">Try me</button></a>
     </div>
 </div>
 <hr/>
@@ -79,7 +80,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
   <div class="row">
 
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in images">
+    <div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in participations">
         <a class="thumbnail" href="#">
             <img class="img-responsive" src="{{i.path}}" alt="">
         </a>
@@ -99,7 +100,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
         </a>
         <h4 class="text-center">FAKE_DATA_001</h4>
         <ul>
-          <li><b>real data</b></li>
+          <li><b>fake data</b></li>
           <li>title: fake_title</li>
           <li>id: 000</li>
           <li>uploadedOn: fake_date</li>
