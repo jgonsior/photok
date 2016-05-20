@@ -1,8 +1,12 @@
 var photokControllers = angular.module('photokControllers', [
-	'contestServices'
+	'photokServices'
 ]);
 
-
+/**
+*	Header controller
+* -----------------
+* Only here to update the navbar
+*/
 photokControllers.controller('HeaderController', ['$scope', '$location',
 function($scope, $location) {
 	$scope.isActive = function (viewLocation) {
@@ -10,20 +14,43 @@ function($scope, $location) {
 	};
 }]);
 
-photokControllers.controller('ContestListController', ['$scope', 'Contest',
-function($scope, Contest) {
-	$scope.contests = Contest.query();
+
+/**
+*	Contest list controller
+* -----------------------
+* Only get the list with a HTTP GET query on the api
+* Choose a default order
+*/
+photokControllers.controller('ContestListController', ['$http', '$scope', 'Contest',
+function($http, $scope, Contest) {
+	$http.get('api/contests').success(function(data) {
+  	$scope.contests = data;
+	});
+
 	$scope.orderProp = 'createdDate';
 }]);
 
-photokControllers.controller('ContestDetailController', ['$scope', '$routeParams', 'Contest', 'ContestImages','ImageParticipation',
-function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
-	$scope.contest = Contest.get({contestId: $routeParams.contestId}, function(contest) {
+
+/**
+*	Contest controller (details)
+* ----------------------------
+* Get the data for a specific contest (id given in the route)
+* Get the images sent for a contest
+* Connect with the API for sending an image for the contest
+*/
+photokControllers.controller('ContestDetailController', ['$http', '$scope', '$routeParams', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation) {
+
+	// Get the data for the contest
+	$http.get('api/contests/'+$routeParams.contestId).success(function(data) {
+  	$scope.contest = data;
 	});
+
+	// Get the images for the contest
 	$scope.images = ContestImages.get({contestId: $routeParams.contestId}, function(contest) {
 	});
 
-	// - - - Form for participation
+	// Form for participation
 	$scope.master = {};
 
 	$scope.update = function(participation) {
@@ -39,8 +66,9 @@ function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
 	};
 
 	$scope.reset();
-	// - - -
+	// ! form
 
+	// Function called when form is sent
 	$scope.sendImage = function () {
 
 		alert("SENDING: "+$scope.participation.title);
@@ -54,7 +82,8 @@ function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
     var token = function() {
         return rand();
     };
-    // call login from service
+
+    // Call the service function that will connect with the API
     ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data","1","1")
       // handle success
       .then(function () {
@@ -67,11 +96,18 @@ function($scope, $routeParams, Contest, ContestImages, ImageParticipation) {
       });
 
 			alert("SENDING: Done");
-
   };
 
 }]);
 
+
+/**
+*	Create contest controller
+* -------------------------
+* Get the data for a specific contest (id given in the route)
+* Get the images sent for a contest
+* Connect with the API for sending an image for the contest
+*/
 photokControllers.controller('CreateContestController', ['$scope', '$routeParams', 'Contest', 'ContestImages',
 function($scope, $routeParams, Contest, ContestImages) {
 	$scope.master = {};
@@ -89,4 +125,27 @@ function($scope, $routeParams, Contest, ContestImages) {
   };
 
   $scope.reset();
+
+	// Function called when form is sent
+	$scope.createContest = function () {
+
+		alert("SENDING: "+$scope.contest.headline);
+
+		// Call the service function that will connect with the API
+		// TODO: Add more parameters (: replace fake data in the service)
+		Contest.createContest($scope.contest.headline, $scope.contest.workingtitle)
+			// handle success
+			.then(function () {
+				alert('CONTROLLER: Success');
+			})
+			// handle error
+			.catch(function () {
+				//$scope.error = true;
+				alert('CONTROLLER: Error');
+			});
+
+			alert("SENDING: Done");
+
+	};
+
 }]);

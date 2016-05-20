@@ -1,12 +1,10 @@
-var contestServices = angular.module('contestServices', ['ngResource']);
+var photokServices = angular.module('photokServices', ['ngResource']);
 
-
-contestServices.factory('ImageParticipation', ['$q', '$timeout', '$http',
+photokServices.factory('ImageParticipation', ['$q', '$timeout', '$http',
 function ($q, $timeout, $http){
 	return ({
       sendImage: sendImage
     });
-
 
 	function sendImage(title, exif, contest, user) {
 		var deferred = $q.defer();
@@ -36,14 +34,40 @@ function ($q, $timeout, $http){
 	return null;
 }]);
 
-contestServices.factory('Contest', ['$resource',
-function($resource){
-	return $resource('api/contests/:contestId', {}, {
-		query: {method:'GET', params:{contestId:''}, isArray:true}
-	});
+photokServices.factory('Contest', ['$q', '$timeout', '$http','$resource',
+function ($q, $timeout, $http, $resource){
+	return ({
+		createContest: createContest
+  });
+
+	function createContest(headline, workingTitle) {
+		var deferred = $q.defer();
+		$http.post('/api/contests', {headline: headline, workingTitle: workingTitle, startDate: "2016-01-12 13:01:54.411227",endDate:"2016-01-12 13:01:54.411227", createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
+			// handle success
+			.success(function (data, status) {
+				if(status === 200 /*&& data.result*/){
+					alert('SERVICE: Success');
+					deferred.resolve();
+				} else {
+					alert('SERVICE: Success, but wrong status returned');
+					deferred.reject();
+				}
+			})
+			// handle error
+			.error(function (data) {
+				alert('SERVICE: Error');
+				deferred.reject();
+			});
+
+		// return promise object
+		return deferred.promise;
+	}
+
+	return null;
+
 }]);
 
-contestServices.factory('ContestImages', ['$resource',
+photokServices.factory('ContestImages', ['$resource',
 function($resource){
 	return $resource('api/images/contest/:contestId', {}, {
 		query: {method:'GET', params:{contestId:''}, isArray:true}

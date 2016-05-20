@@ -2,16 +2,11 @@
 
 var photokApp = angular.module('photok', [
 	'ngRoute',
-	'contestServices',
+	'photokServices',
 	'photokControllers'
 ]);
 
 photokApp.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-	// avoid jinga / angular template conflict
-	// {{}} is for jinga
-	// [[]] is for angular
-	//$interpolateProvider.startSymbol('[[');
-	//$interpolateProvider.endSymbol(']]');
 
 	$routeProvider.when('/', {
 		title: 'Home',
@@ -23,7 +18,8 @@ photokApp.config(['$locationProvider', '$routeProvider', function($locationProvi
 	}).
 	when('/add', {
 		title: 'Add contest',
-		templateUrl: 'static/partials/create-contest.html'
+		templateUrl: 'static/partials/create-contest.html',
+		controller: 'CreateContestController'
 	}).
 	when('/contests', {
 		title: 'Contests',
@@ -47,6 +43,7 @@ photokApp.config(['$locationProvider', '$routeProvider', function($locationProvi
 	$locationProvider.html5Mode(true);
 }]);
 
+// In order to change the <title> tag depending on the page
 photokApp.run(['$rootScope', function($rootScope) {
     $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
         $rootScope.title = current.$$route.title;

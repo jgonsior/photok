@@ -6,8 +6,8 @@
     </p><hr/>
   </div>
 
-  <div class="col-md-12" ng-controller="CreateContestController">
-    <form name="form" class="css-form" novalidate>
+  <div class="col-md-12">
+    <form name="form" class="css-form" ng-submit="createContest()" novalidate>
 
       <div class="form-group">
         <label for="headline">Headline*</label>
@@ -83,7 +83,7 @@
       </div>
 
       <input type="button" ng-click="reset(form)" value="Reset" />
-      <input type="submit" ng-click="update(contest)" value="Save" />
+      <input type="submit"  value="Save" />
     </form>
     <pre>contest = {{contest | json}}</pre>
     <pre>master = {{master | json}}</pre>
