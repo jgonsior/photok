@@ -37,7 +37,7 @@ with app.app_context():
 
     userManager = UserManager(dbAdapter, app, password_validator=passwordValidator,)
 
-    # create some fake data for deveoloping
+    # create some fake data for developing
     # Create a test user/admin
     if not User.query.filter(User.username=='test').first():
         user1 = User(username='test', email='test@example.com', active=True,
@@ -47,26 +47,26 @@ with app.app_context():
         db.session.add(user1)
 
         argCon1 = {
-                "headline": "Link\ouml;pings most beautifull spring flower",
+                "headline": "Saint Saturnin les Avignon's most beautiful spring flower",
                 "workingTitle": "spring contest 2016",
-                "startDate": datetime.utcnow() + timedelta(days=10),
-                "endDate": datetime.utcnow() + timedelta(days=20),
+                "startDate": datetime.utcnow() - timedelta(days=30),
+                "endDate": datetime.utcnow() - timedelta(days=20),
                 "voteMethod": "simple"
                 }
 
         argCon2 = {
-                "headline": "Link\ouml;pings most beautifull autumn flower",
+                "headline": "Klotzsche's most beautiful autumn flower",
                 "workingTitle": "summer contest 2016",
-                "startDate": datetime.utcnow() + timedelta(days=10),
-                "endDate": datetime.utcnow() + timedelta(days=20),
+                "startDate": datetime.utcnow() - timedelta(days=20),
+                "endDate": datetime.utcnow() - timedelta(days=10),
                 "voteMethod": "simple"
                 }
 
         argCon3 = {
-                "headline": "Link\ouml;pings most beautifull winter flower",
+            "headline": "Roelofarendsveen's most beautiful winter flower",
                 "workingTitle": "winter contest 2016",
-                "startDate": datetime.utcnow() + timedelta(days=10),
-                "endDate": datetime.utcnow() + timedelta(days=20),
+                "startDate": datetime.utcnow() - timedelta(days=10),
+                "endDate": datetime.utcnow(),
                 "voteMethod": "simple"
                 }
 
@@ -78,9 +78,9 @@ with app.app_context():
         db.session.add(contest2)
         db.session.add(contest3)
 
-        image1 = Image("Tulip", "Gold", user1, contest1)
-        image2 = Image("Sunflower", "Silver", user1, contest1)
-        image3 = Image("Onion", "Bronze", user1, contest1)
+        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': "Gold", 'userId': 1, 'contestId': 1})
+        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': "Silver", 'userId': 1, 'contestId': 1})
+        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': "Bronze", 'userId': 1, 'contestId': 1})
         db.session.add(image1)
         db.session.add(image2)
         db.session.add(image3)
