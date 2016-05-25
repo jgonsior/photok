@@ -108,6 +108,7 @@ with app.app_context():
 @app.route('/')
 @app.route('/admin')
 @app.route('/add')
+@app.route('/edit/<contestId>')
 def basic_pages(**kwargs):
     return render_template('main.html')
 

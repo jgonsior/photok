@@ -21,6 +21,11 @@ photokApp.config(['$locationProvider', '$routeProvider', function($locationProvi
 		templateUrl: 'static/partials/create-contest.html',
 		controller: 'CreateContestController'
 	}).
+	when('/edit/:contestId', {
+		title: 'Edit contest',
+		templateUrl: 'static/partials/edit-contest.html',
+		controller: 'EditContestController'
+	}).
 	when('/contests', {
 		title: 'Contests',
 		templateUrl: 'static/partials/contest-list.html',

@@ -123,6 +123,78 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 
 
 /**
+*	Edit contest
+* ----------------------------
+* ...
+*/
+photokControllers.controller('EditContestController', ['$http', '$scope', '$routeParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $routeParams, $window, Contest, ContestImages, ImageParticipation) {
+
+	var contest = $routeParams.contestId;
+
+	// Get the data for the contest
+	$http.get('api/contests/' + contest).success(function(result) {
+  	$scope.contest = result;
+	});
+
+	// Get the images for the contest
+	// store them in an array so that we can use .push() after the form is sent
+	$scope.participations = [];
+	$http.get('api/images/contest/' + contest).success(function(result) {
+			angular.forEach(result, function(value, key) {
+				$scope.participations.push(value);
+			});
+	});
+
+	// Function called when form is sent
+	$scope.editContest = function () {
+
+		alert("SENDING: "+$scope.contest.headline+"; id : "+$scope.contest.id);
+
+		// Call the service function that will connect with the API
+		// TODO: Add more parameters (: replace fake data in the service)
+		Contest.editContest($scope.contest.id,$scope.contest.headline, $scope.contest.workingtitle)
+			// handle success
+			.then(function () {
+				alert('CONTROLLER: Success');
+			})
+			// handle error
+			.catch(function () {
+				//$scope.error = true;
+				alert('CONTROLLER: Error');
+			});
+
+			alert("SENDING: Done");
+
+	};
+
+	// Function called when delete button is clicked
+	$scope.deleteContest = function () {
+
+		alert("DELETING: "+$scope.contest.headline+"; id : "+$scope.contest.id);
+
+		// Call the service function that will connect with the API
+		// TODO: Add more parameters (: replace fake data in the service)
+		Contest.deleteContest($scope.contest.id)
+			// handle success
+			.then(function () {
+				alert('CONTROLLER: Success');
+			})
+			// handle error
+			.catch(function () {
+				//$scope.error = true;
+				alert('CONTROLLER: Error');
+			});
+
+			alert("DELETING: Done");
+			$window.location.href = '/contests';
+
+	};
+
+}]);
+
+
+/**
 *	Create contest controller
 * -------------------------
 * Get the data for a specific contest (id given in the route)
