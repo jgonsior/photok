@@ -12,6 +12,9 @@ from models.vote import Vote, VoteApi, VoteListApi
 from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
+from flask_jwt import JWT, jwt_required, current_identity
+from werkzeug.security import safe_str_cmp
+
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -116,6 +119,23 @@ with app.app_context():
     api.add_resource(VoteApi, '/api/votes/<voteId>')
     api.add_resource(VoteListApi, '/api/votes')
 
+
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and userManager.verify_password(password, user):
+        print("hui")
+        return user
+
+def identity(payload):
+    user_id = payload['identity']
+    return User.query.get(user_id)
+jwt = JWT(app, authenticate, identity)
+
+
+@app.route('/protected')
+@jwt_required()
+def protected():
+    return '%s' % current_identity
 
 @app.route('/')
 @app.route('/admin')
