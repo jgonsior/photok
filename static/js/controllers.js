@@ -23,8 +23,16 @@ function($scope, $location) {
 */
 photokControllers.controller('ContestListController', ['$http', '$scope', 'Contest',
 function($http, $scope, Contest) {
-	$http.get('api/contests').success(function(data) {
-  	$scope.contests = data;
+
+	$http.get('api/contests').success(function(result) {
+		$scope.contests = result;
+			angular.forEach(result, function(value, key) {
+				var date = moment(value.endDate);
+				var now = moment();
+				value.past = (now > date);
+
+				value.endDate = moment(value.endDate).format('DD MMM YYYY');
+			});
 	});
 
 	$scope.orderProp = 'createdDate';
@@ -45,7 +53,16 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contest).success(function(result) {
-  	$scope.contest = result;
+		$scope.contest = result;
+		var date = moment(result.endDate);
+		var now = moment();
+		result.past = (now > date);
+		result.duration = date - moment(result.startDate);
+		result.span = date - now;
+
+		result.startDate = moment(result.startDate).format('DD MMM YYYY');
+		result.endDate = moment(result.endDate).format('DD MMM YYYY');
+		result.createdDate = moment(result.createdDate).format('DD MMM YYYY');
 	});
 
 	// Get the images for the contest

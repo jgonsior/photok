@@ -11,6 +11,7 @@ class Contest(db.Model):
 
     headline = db.Column(db.String(255), nullable=False)
     workingTitle = db.Column(db.String(255), nullable=False)
+    theme = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
     createdDate = db.Column(db.DateTime(), nullable=False)
     startDate = db.Column(db.DateTime(), nullable=False)

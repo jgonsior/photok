@@ -20,10 +20,16 @@
 	 class="thumbnail contest-listing">
 
 	 <div class="thumbnail">
+		 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-success" ng-if="!contest.past">You can still participate to this contest</div>
+		 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-danger" ng-if="contest.past">You cannot participate to this contest</div>
+
       <img src="http://placehold.it/400x300" alt="Contest #{{contest.id}}">
       <div class="caption">
         <h4>{{contest.headline}}</h4>
         <p>{{contest.description | limitTo:130 }}<span ng-if="contest.description.length > 130">...</span></p>
+				<p><b>Theme:</b> {{contest.theme}}<br/>
+
+				<b>End date:</b> {{ contest.endDate }}</p>
         <p><a href="contests/{{contest.id}}" class="btn btn-primary" role="button">See more</a></p>
       </div>
     </div>

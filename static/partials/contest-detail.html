@@ -68,9 +68,12 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
       <h3>Information</h3>
         <ul>
   				<li><b>Created at:</b> {{contest.createdDate}}</li>
+          <li><b>Voting method:</b> {{contest.voteMethod}}</li>
   				<li><b>Contest starts at:</b> {{contest.startDate}}</li>
-  				<li><b>Voting method:</b> {{contest.voteMethod}}</li>
-  				<li><b>Participation possible until:</b> {{contest.endDate}}</li>
+          <li><b>Participation possible until:</b> {{contest.endDate}}</li>
+          <li><b>Duration:</b> {{contest.duration}}</li>
+          <li><b ng-if="past">Cannot participate anymore sorry</b>
+          <b ng-if="!past">You still have <u>{{contest.span}}</u> to participate</b></li>
         </ul>
         <a href="" ng-click="participate=true"><button type="button" class="btn btn-success">Participate</button></a>
         <a href="/edit/{{contest.id}}"><button type="button" class="btn btn-primary">Edit</button></a>
