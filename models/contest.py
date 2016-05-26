@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
 import sqlalchemy
+from flask_jwt import jwt_required
 
 
 class Contest(db.Model):
@@ -48,6 +49,7 @@ for prop in class_mapper(Contest).iterate_properties:
 
 
 class ContestApi(Resource):
+    decorators = [jwt_required()]
     def get(self, contestId):
         return prepare_dict_for_json(Contest.query.get(contestId).__dict__)
 
@@ -74,6 +76,7 @@ class ContestApi(Resource):
 
 
 class ContestListApi(Resource):
+    decorators = [jwt_required()]
     def get(self):
         contests = []
         for c in Contest.query.all():
