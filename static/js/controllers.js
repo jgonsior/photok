@@ -46,10 +46,10 @@ function($http, $scope, Contest) {
 * Get the images sent for a contest
 * Connect with the API for sending an image for the contest
 */
-photokControllers.controller('ContestDetailController', ['$http', '$scope', '$routeParams', 'Contest', 'ContestImages','ImageParticipation',
-function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation) {
+photokControllers.controller('ContestDetailController', ['$http', '$scope', '$stateParams', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation) {
 
-	var contest = $routeParams.contestId;
+	var contest = $stateParams.contestId;
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contest).success(function(result) {
@@ -106,7 +106,7 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 	// Function called when form is sent
 	$scope.sendImage = function () {
 
-		alert("SENDING: "+$scope.participation.title+" for contest #"+$routeParams.contestId);
+		alert("SENDING: "+$scope.participation.title+" for contest #"+$stateParams.contestId);
 		//alert("got image: "+$scope.participation.image);
 
     // generate a token functions
@@ -144,10 +144,10 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 * ----------------------------
 * ...
 */
-photokControllers.controller('EditContestController', ['$http', '$scope', '$routeParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
-function($http, $scope, $routeParams, $window, Contest, ContestImages, ImageParticipation) {
+photokControllers.controller('EditContestController', ['$http', '$scope', '$stateParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $stateParams, $window, Contest, ContestImages, ImageParticipation) {
 
-	var contest = $routeParams.contestId;
+	var contest = $stateParams.contestId;
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contest).success(function(result) {
@@ -218,8 +218,8 @@ function($http, $scope, $routeParams, $window, Contest, ContestImages, ImagePart
 * Get the images sent for a contest
 * Connect with the API for sending an image for the contest
 */
-photokControllers.controller('CreateContestController', ['$scope', '$routeParams', 'Contest', 'ContestImages',
-function($scope, $routeParams, Contest, ContestImages) {
+photokControllers.controller('CreateContestController', ['$scope', '$stateParams', 'Contest', 'ContestImages',
+function($scope, $stateParams, Contest, ContestImages) {
 	$scope.master = {};
 
   $scope.update = function(contest) {
@@ -266,12 +266,12 @@ function($scope, $routeParams, Contest, ContestImages) {
 * -------------------------
 * ...
 */
-photokControllers.controller('VoteContestController', ['$http', '$scope', '$routeParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
-function($http, $scope, $routeParams, $window, Contest, ContestImages, ImageParticipation) {
+photokControllers.controller('VoteContestController', ['$http', '$scope', '$stateParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $stateParams, $window, Contest, ContestImages, ImageParticipation) {
 
 	$scope.results = {first: 0, second: 0, third: 0};
 
-	var contest = $routeParams.contestId;
+	var contest = $stateParams.contestId;
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contest).success(function(result) {
