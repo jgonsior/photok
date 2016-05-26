@@ -3,12 +3,13 @@ var photokServices = angular.module('photokServices', ['ngResource']);
 photokServices.factory('ImageParticipation', ['$q', '$timeout', '$http',
 function ($q, $timeout, $http){
 	return ({
-      sendImage: sendImage
+		sendImage: sendImage,
+		voteImage: voteImage
     });
 
 	function sendImage(title, path, exif, contest, user) {
 		var deferred = $q.defer();
-		$http.post('/api/images/contest/1', {title: title, path: path, exifData: exif, contestId: contest, userId: user, prize: "Nothing"})
+		$http.post('/api/images/contest/1', {title: title, path: path, exifData: exif, contestId: contest, userId: user, prize: 0})
 			// handle success
 			.success(function (data, status) {
 				if(status === 200){
@@ -28,6 +29,30 @@ function ($q, $timeout, $http){
 		// return promise object
 		return deferred.promise;
 	}
+
+	function voteImage(id, vote) {
+		var deferred = $q.defer();
+		$http.put('/api/images/'+id, {prize: vote})
+			// handle success
+			.success(function (data, status) {
+				if(status === 200){
+					image = true;
+					deferred.resolve();
+				} else {
+					image = false;
+					deferred.reject();
+				}
+			})
+			// handle error
+			.error(function (data) {
+				image = false;
+				deferred.reject();
+			});
+
+		// return promise object
+		return deferred.promise;
+	}
+
 	return null;
 }]);
 

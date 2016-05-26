@@ -1,0 +1,66 @@
+
+<div class="row">
+  <div class="col-lg-12 col-md-12 col-xs-12">
+		<h2><u>Contest name:</u> {{contest.headline}}</h2>
+  </div>
+</div>
+
+
+<h3>Participations</h3>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="alert alert-info">
+          <b>First:</b> {{results.first}} ;
+          <b>Second:</b> {{results.second}}
+          <b>Second:</b> {{results.third}}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="alert alert-warning"
+          ng-if="results.first == 0 || results.second == 0 || results.third == 0">
+          <b>Warning:</b> Please select 3 images
+        </div>
+        <div class="alert alert-danger"
+          ng-if="(results.first != 0 && results.second != 0 && results.third != 0) && (results.first == results.second || results.second == results.third || results.first == results.third)">
+          <b>Error:</b> One image can only have one result
+        </div>
+        <div class="alert alert-success"
+          ng-if="(results.first != 0 && results.second != 0 && results.third != 0) && !(results.first == results.second || results.second == results.third || results.first == results.third)">
+          <b>Yay:</b> Everything seems ok! You can now save
+        </div>
+      </div>
+      <div class="col-md-2">
+        <a href="" ng-click="sendVotes()" class="btn btn-success btn-lg"
+        ng-if="(results.first != 0 && results.second != 0 && results.third != 0) && !(results.first == results.second || results.second == results.third || results.first == results.third)">
+          Save
+        </a>
+      </div>
+    </div>
+
+  <div class="row">
+
+    <div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in participations">
+        <a class="thumbnail" href="#">
+            <img class="img-responsive" src="{{i.path}}" alt="">
+        </a>
+        <h4 class="text-center">{{i.title}}<!--(#{{i.prize}})--></h4>
+        <ul>
+          <li><b>real data</b></li>
+          <li>title: {{i.title}}</li>
+          <li>id: {{i.id}}</li>
+          <li>uploadedOn: {{i.uploadedOn}}</li>
+          <li>userId: {{i.userId}}</li>
+        </ul>
+
+        <div id="vote">
+          <label class="green"><input ng-checked="i.prize == 1" style="display:none;" type="radio" name="first" value="{{i.id}}" ng-model="results.first"><span>First</span></label>
+          <label class="blue"><input ng-checked="i.prize == 2" style="display:none;" type="radio" name="second" value="{{i.id}}" ng-model="results.second"><span>Second</span></label>
+          <label class="red"><input ng-checked="i.prize == 3" style="display:none;" type="radio" name="third" value="{{i.id}}" ng-model="results.third"><span>Third</span></label>
+        </div>
+    </div>
+
+
+
+
+</div>

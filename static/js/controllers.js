@@ -242,3 +242,81 @@ function($scope, $routeParams, Contest, ContestImages) {
 	};
 
 }]);
+
+
+/**
+*	Vote for contest
+* -------------------------
+* ...
+*/
+photokControllers.controller('VoteContestController', ['$http', '$scope', '$routeParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
+function($http, $scope, $routeParams, $window, Contest, ContestImages, ImageParticipation) {
+
+	$scope.results = {first: 0, second: 0, third: 0};
+
+	var contest = $routeParams.contestId;
+
+	// Get the data for the contest
+	$http.get('api/contests/' + contest).success(function(result) {
+  	$scope.contest = result;
+	});
+
+	// Get the images for the contest
+	// store them in an array so that we can use .push() after the form is sent
+	$scope.participations = [];
+	$http.get('api/images/contest/' + contest).success(function(result) {
+			angular.forEach(result, function(value, key) {
+				$scope.participations.push(value);
+				if(value.prize == 1) $scope.results.first = value.id;
+				if(value.prize == 2) $scope.results.second = value.id;
+				if(value.prize == 3) $scope.results.third = value.id;
+
+			});
+	});
+
+
+
+	// Function called when form is sent
+	$scope.sendVotes = function () {
+
+		alert("VOTING: "+$scope.results);
+
+		// Call the service function that will connect with the API
+		ImageParticipation.voteImage($scope.results.first,1)
+		// handle success
+		.then(function () {
+			alert('CONTROLLER: Success');
+		})
+		// handle error
+		.catch(function () {
+			//$scope.error = true;
+			alert('CONTROLLER: Error');
+		});
+
+		ImageParticipation.voteImage($scope.results.second,2)
+		// handle success
+		.then(function () {
+			alert('CONTROLLER: Success');
+		})
+		// handle error
+		.catch(function () {
+			//$scope.error = true;
+			alert('CONTROLLER: Error');
+		});
+
+		ImageParticipation.voteImage($scope.results.third,3)
+		// handle success
+		.then(function () {
+			alert('CONTROLLER: Success');
+		})
+		// handle error
+		.catch(function () {
+			//$scope.error = true;
+			alert('CONTROLLER: Error');
+		});
+
+
+			alert("VOTING: Done");
+	};
+
+}]);

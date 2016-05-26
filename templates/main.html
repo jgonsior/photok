@@ -26,6 +26,41 @@
 		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload-shim.min.js"></script>
         <!-- added these to try and fix upload -->
 
+				<!-- only for vote page -->
+				<style>
+        #vote label {
+          float:left;
+          background-color:#EFEFEF;
+          border-radius:4px;
+          border:1px solid #D0D0D0;
+          overflow:auto;
+        }
+
+        #vote label span {
+          padding: 0.5em;
+          text-align:center;
+          display:block;
+        }
+
+        #vote label input {
+          position:absolute;
+          top:-20px;
+        }
+
+        #vote label.green input:checked + span {
+          background-color:green;
+          color:#F7F7F7;
+        }
+				#vote label.blue input:checked + span {
+          background-color:blue;
+          color:#F7F7F7;
+        }
+				#vote label.red input:checked + span {
+          background-color:red;
+          color:#F7F7F7;
+        }
+        </style>
+
 	</head>
 	<body>
 

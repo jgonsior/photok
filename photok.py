@@ -78,9 +78,9 @@ with app.app_context():
         db.session.add(contest2)
         db.session.add(contest3)
 
-        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': "Gold", 'userId': 1, 'contestId': 1})
-        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': "Silver", 'userId': 1, 'contestId': 1})
-        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': "Bronze", 'userId': 1, 'contestId': 1})
+        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
+        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
+        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
         db.session.add(image1)
         db.session.add(image2)
         db.session.add(image3)
@@ -109,6 +109,7 @@ with app.app_context():
 @app.route('/admin')
 @app.route('/add')
 @app.route('/edit/<contestId>')
+@app.route('/vote/<contestId>')
 def basic_pages(**kwargs):
     return render_template('main.html')
 

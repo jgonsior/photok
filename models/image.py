@@ -14,7 +14,7 @@ class Image(db.Model):
     path = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     exifData = db.Column(db.Text)
-    prize = db.Column(db.String(255), nullable=False)
+    prize = db.Column(db.Integer, nullable=False)
 
     # Relationships
     userId = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
