@@ -18,11 +18,16 @@
 
 	<div class="col-md-3" ng-repeat="contest in contests | filter:query | orderBy:orderProp"
 	 class="thumbnail contest-listing">
-		<a href="contests/{{contest.id}}">
-			contests/{{contest.id}}
-			<img class="img-responsive" src="http://placehold.it/400x300" alt="">
-			<span>{{contest.id}} | {{contest.headline}}</span>
-		</a>
+
+	 <div class="thumbnail">
+      <img src="http://placehold.it/400x300" alt="Contest #{{contest.id}}">
+      <div class="caption">
+        <h4>{{contest.headline}}</h4>
+        <p>{{contest.description | limitTo:130 }}<span ng-if="contest.description.length > 130">...</span></p>
+        <p><a href="contests/{{contest.id}}" class="btn btn-primary" role="button">See more</a></p>
+      </div>
+    </div>
+
 	</div>
 	<!-- end of col -->
 

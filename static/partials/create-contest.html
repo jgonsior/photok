@@ -13,6 +13,7 @@
         <label for="headline">Headline*</label>
         <input type="text" ng-model="contest.headline" name="headline" required="" placeholder="Headline"/>
       </div>
+      <p>The headline should attract people to your contest.</p>
       <div ng-show="form.$submitted || form.headline.$touched">
         <div ng-show="form.headline.$error.required" class="alert alert-danger">What is the headline of your contest?</div>
       </div>
@@ -21,6 +22,8 @@
         <label for="theme">Theme*</label>
         <input type="text" ng-model="contest.theme" name="theme" required="" placeholder="theme"/>
       </div>
+      <p>The theme is more technical. You can think of "Portraits" or "Flowers", etc.</p>
+
       <div ng-show="form.$submitted || form.theme.$touched">
         <div ng-show="form.theme.$error.required" class="alert alert-danger">What is the theme of your contest?</div>
       </div>
@@ -29,6 +32,8 @@
         <label for="workingtitle">Working title*</label>
         <input type="text" ng-model="contest.workingtitle" name="workingtitle" required="" placeholder="Working title"/>
       </div>
+      <p>The working title is a title that won't be displayed to the user but that will help you organize your
+        contests</p>
       <div ng-show="form.$submitted || form.workingtitle.$touched">
         <div ng-show="form.workingtitle.$error.required" class="alert alert-danger">What is the working title of your contest?</div>
       </div>
@@ -42,10 +47,13 @@
         <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your contest?</div>
       </div>-->
 
+      <!-- TODO: textarea -->
       <div class="form-group">
         <label for="description">Description*</label>
         <input type="text" ng-model="contest.description" name="description" required="" placeholder="Description"/>
       </div>
+      <p>A longer description of your contest</p>
+
       <div ng-show="form.$submitted || form.description.$touched">
         <div ng-show="form.description.$error.required" class="alert alert-danger">What is the description of your contest?</div>
       </div>
@@ -86,7 +94,6 @@
       <input type="submit"  value="Save" />
     </form>
     <pre>contest = {{contest | json}}</pre>
-    <pre>master = {{master | json}}</pre>
   </div>
 
 

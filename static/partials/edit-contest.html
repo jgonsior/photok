@@ -2,8 +2,7 @@
 
   <div class="col-md-12">
     <h2>Edit a contest</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-    </p>
+    <p><span class="badge">info</span> This page should only be seen by <b>the creator of the contest</b></p>
 
     <a href="" ng-click="deleteContest()"><button type="button" class="btn btn-danger">Delete the contest</button></a>
 
@@ -92,7 +91,6 @@
       <input type="submit" class="btn btn-success" value="Edit" /><hr/>
     </form>
     <pre>contest = {{contest | json}}</pre>
-    <pre>master = {{master | json}}</pre>
   </div>
     <div class="col-md-6">
       <h3 style="display:inline;">Participations</h3>
@@ -104,7 +102,7 @@
             <a class="thumbnail" href="#">
                 <img class="img-responsive" src="{{i.path}}" alt="">
             </a>
-            <h4 class="text-center">{{i.title}}</h4>
+            <h4 class="text-center">{{i.title}} <span class="badge" ng-if="i.prize != 0">#{{i.prize}}</span></b></h4>
             <ul>
               <li><b>real data</b></li>
               <li>title: {{i.title}}</li>
