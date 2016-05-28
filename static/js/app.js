@@ -3,18 +3,19 @@
 var photokApp = angular.module('photok', [
 	'ui.router',
 	'photokServices',
-	'photokControllers'
+	'photokControllers',
+	'ngStorage'
 ]);
 
-photokApp.factory('httpRequestInterceptor', function () {
+photokApp.factory('httpRequestInterceptor', ['$localStorage', function ($localStorage) {
   return {
     request: function (config) {
 
-      config.headers['Authorization'] = ' JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGl0eSI6MSwiaWF0IjoxNDY0MzQ2MDc4LCJuYmYiOjE0NjQzNDYwNzgsImV4cCI6MTQ2NTIxMDA3OH0.S0-lgd5CmOxqNoMiczfSqJ3fI0QQwmB6FDxQuRFjUBc';
+      config.headers['Authorization'] = 'JWT ' + $localStorage.currentUser.access_token;
       return config;
     }
   };
-});
+}]);
 
 photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
 

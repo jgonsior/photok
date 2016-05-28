@@ -1,4 +1,4 @@
-var photokServices = angular.module('photokServices', ['ngResource']);
+var photokServices = angular.module('photokServices', ['ngResource', 'ngStorage']);
 
 photokServices.factory('ImageParticipation', ['$q', '$timeout', '$http',
 function ($q, $timeout, $http){
@@ -132,4 +132,30 @@ function($resource){
 	return $resource('api/images/contest/:contestId', {}, {
 		query: {method:'GET', params:{contestId:''}, isArray:true}
 	});
+}]);
+
+
+photokServices.factory('AuthenticationService', ['$http', '$localStorage', function($http, $localStorage) {
+	return ({
+		login: login,
+		logout: logout
+	});
+	console.log('hui');
+
+	function login(username, password, callback) {
+		$http.post('auth', {username: username, password:password})
+			.success(function(response) {
+				if(response.access_token) {
+					$localStorage.currentUser = {username: username, access_token: response.access_token};
+					callback(true);
+				} else {
+					callback(false);
+				}
+			});
+	}
+
+	function logout() {
+		delete $localStorage.currentUser;
+		$http.defaults.headers.common.Authorization = '';
+	}
 }]);
