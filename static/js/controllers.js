@@ -21,8 +21,7 @@ function($scope, $location) {
 * Only get the list with a HTTP GET query on the api
 * Choose a default order
 */
-photokControllers.controller('ContestListController', ['$http', '$scope', 'Contest',
-function($http, $scope, Contest) {
+photokControllers.controller('ContestListController', ['$http', '$scope', 'Contest',  function($http, $scope, Contest) {
 
 	$http.get('api/contests').success(function(result) {
 		$scope.contests = result;

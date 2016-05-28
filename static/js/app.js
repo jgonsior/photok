@@ -6,7 +6,19 @@ var photokApp = angular.module('photok', [
 	'photokControllers'
 ]);
 
-photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $stateProvider, $urlRouterProvider) {
+photokApp.factory('httpRequestInterceptor', function () {
+  return {
+    request: function (config) {
+
+      config.headers['Authorization'] = ' JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZGVudGl0eSI6MSwiaWF0IjoxNDY0MzQ2MDc4LCJuYmYiOjE0NjQzNDYwNzgsImV4cCI6MTQ2NTIxMDA3OH0.S0-lgd5CmOxqNoMiczfSqJ3fI0QQwmB6FDxQuRFjUBc';
+      return config;
+    }
+  };
+});
+
+photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
+
+	$httpProvider.interceptors.push('httpRequestInterceptor');
 	//for any unmatched url redirect to /
 	$urlRouterProvider.otherwise("/error-404");
 
@@ -57,3 +69,4 @@ photokApp.run(['$rootScope', '$state',  function($rootScope, $state) {
 		$rootScope.title = $state.current.title;
 	});
 }]);
+
