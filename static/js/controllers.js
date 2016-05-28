@@ -161,7 +161,7 @@ function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation
 photokControllers.controller('EditContestController', ['$http', '$scope', '$stateParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
 function($http, $scope, $stateParams, $window, Contest, ContestImages, ImageParticipation) {
 
-	var contestId = $routeParams.contestId;
+	var contestId = $stateParams.contestId;
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contestId).success(function(result) {
