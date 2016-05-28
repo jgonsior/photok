@@ -83,9 +83,10 @@ function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation
 				if (c.prize == 1) $scope.winners.first = c;
 				if (c.prize == 2) $scope.winners.second = c;
 				if (c.prize == 3) $scope.winners.third = c;
-				$scope.hidewinners = angular.equals($scope.winners,{});
 
 			});
+			$scope.hidewinners = angular.equals($scope.winners,{});
+
 	});
 
 	// Form for participation
@@ -202,25 +203,24 @@ function($http, $scope, $stateParams, $window, Contest, ContestImages, ImagePart
 	// Function called when form is sent
 	$scope.editContest = function () {
 
-		alert("EDITING: "+$scope.contest.workingTitle);
+		$scope.sent = true;
+
+		//alert($scope.contest.description);
 
 		// Call the service function that will connect with the API
-		// TODO: Add more parameters (: replace fake data in the service)
 		Contest.editContest($scope.contest.id,$scope.contest.headline, $scope.contest.theme,
 		$scope.contest.workingTitle, $scope.contest.description,
 		moment($scope.contest.startDate).format('YYYY-MM-DD HH:mm:ss.SSS'),
 		moment($scope.contest.endDate).format('YYYY-MM-DD HH:mm:ss.SSS'))
 			// handle success
 			.then(function () {
-				alert('CONTROLLER: Success');
+				$scope.success = true;
 			})
 			// handle error
 			.catch(function () {
-				//$scope.error = true;
-				alert('CONTROLLER: Error');
+				$scope.success = false;
 			});
 
-			alert("EDITING: Done");
 	};
 
 	// Function called when delete button is clicked

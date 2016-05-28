@@ -7,6 +7,16 @@
     <a href="" ng-click="deleteContest()"><button type="button" class="btn btn-danger">Delete the contest</button></a>
 
     <hr/>
+    <div ng-show="!sent" class="alert alert-info">
+      <b>Leaving an empty field</b> will keep the previous value (don't do it though... please).
+    </div>
+    <div ng-show="sent && success" class="alert alert-success">
+      <b>Well done, you!</b> Your contest is edited. <a href="contests/{{contest.id}}">Click here</a> to see it live.
+    </div>
+    <div ng-show="sent && !success" class="alert alert-danger">
+      <b>Oh no,</b> something went wrong.
+    </div>
+
   </div>
 </div>
 <div class="row">
