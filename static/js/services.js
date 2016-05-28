@@ -64,9 +64,10 @@ function ($q, $timeout, $http, $resource){
 		editContest: editContest
   });
 
-	function createContest(headline, workingTitle) {
+	function createContest(headline, theme, workingTitle, description, startDate, endDate) {
 		var deferred = $q.defer();
-		$http.post('/api/contests', {headline: headline, workingTitle: workingTitle, startDate: "2016-01-12 13:01:54.411227",endDate:"2016-01-12 13:01:54.411227", createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
+
+		$http.post('/api/contests', {headline: headline, theme:theme, workingTitle: workingTitle, description:description, startDate: startDate, endDate: endDate, createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
 			// handle success
 			.success(function (data, status) {
 				if(status === 200){

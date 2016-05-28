@@ -276,23 +276,30 @@ function($scope, $stateParams, Contest, ContestImages) {
 
 	// Function called when form is sent
 	$scope.createContest = function () {
+		$scope.sent = true;
 
-		alert("SENDING: "+$scope.contest.headline);
+		//"2016-01-12 13:01:54.411227"
 
 		// Call the service function that will connect with the API
-		// TODO: Add more parameters (: replace fake data in the service)
-		Contest.createContest($scope.contest.headline, $scope.contest.workingtitle)
+		Contest.createContest($scope.contest.headline, $scope.contest.theme,
+			$scope.contest.workingTitle, $scope.contest.description,
+			moment($scope.contest.startDate).format('YYYY-MM-DD HH:mm:ss.SSS'),
+			moment($scope.contest.endDate).format('YYYY-MM-DD HH:mm:ss.SSS')
+		)
 			// handle success
 			.then(function () {
-				alert('CONTROLLER: Success');
+				$scope.success = true;
+				$scope.form.$setPristine();
+				$scope.form.$setUntouched();
+				$scope.contest = null;
 			})
 			// handle error
 			.catch(function () {
-				//$scope.error = true;
-				alert('CONTROLLER: Error');
+				$scope.success = false;
 			});
 
-			alert("SENDING: Done");
+
+			//alert("SENDING: Done");
 
 	};
 

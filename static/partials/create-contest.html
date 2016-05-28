@@ -2,46 +2,54 @@
 
   <div class="col-md-12">
     <h2>Create a contest</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    <p>
+      You are about to create a contest. As soon as you are done, the users of <b>photok</b>
+      will be able to send their pictures.<br/>
+      Here you have to describe what your contest will be about. We recommend that you
+      describe the prizes in the <i>description field</i>.<br/>
+      Don't forget to set the dates correctly, and you're good to go!
     </p><hr/>
+    <div ng-show="sent && success" class="alert alert-success">
+      <b>Well done, you!</b> Your contest is created. <a href="">Click here</a> to see it live.
+    </div>
+    <div ng-show="sent && !success" class="alert alert-danger">
+      <b>Oh no,</b> something went wrong.
+    </div>
   </div>
 
-  <div class="col-md-12">
+  <div class="col-md-6">
     <form name="form" class="css-form" ng-submit="createContest()" novalidate>
 
       <div class="form-group">
         <label for="headline">Headline*</label>
-        <input type="text" ng-model="contest.headline" name="headline" required="" placeholder="Headline"/>
+        <input class="form-control" type="text" ng-model="contest.headline" name="headline" required="" placeholder="Headline"/>
       </div>
-      <p>The headline should attract people to your contest.</p>
       <div ng-show="form.$submitted || form.headline.$touched">
         <div ng-show="form.headline.$error.required" class="alert alert-danger">What is the headline of your contest?</div>
       </div>
 
       <div class="form-group">
         <label for="theme">Theme*</label>
-        <input type="text" ng-model="contest.theme" name="theme" required="" placeholder="theme"/>
+        <input class="form-control" type="text" ng-model="contest.theme" name="theme" required="" placeholder="Theme"/>
       </div>
-      <p>The theme is more technical. You can think of "Portraits" or "Flowers", etc.</p>
 
       <div ng-show="form.$submitted || form.theme.$touched">
         <div ng-show="form.theme.$error.required" class="alert alert-danger">What is the theme of your contest?</div>
       </div>
 
       <div class="form-group">
-        <label for="workingtitle">Working title*</label>
-        <input type="text" ng-model="contest.workingtitle" name="workingtitle" required="" placeholder="Working title"/>
-      </div>
-      <p>The working title is a title that won't be displayed to the user but that will help you organize your
-        contests</p>
-      <div ng-show="form.$submitted || form.workingtitle.$touched">
-        <div ng-show="form.workingtitle.$error.required" class="alert alert-danger">What is the working title of your contest?</div>
+        <label for="workingTitle">Working title*</label>
+        <input class="form-control" type="text" ng-model="contest.workingTitle" name="workingTitle" required="" placeholder="Working title"/>
       </div>
 
-      <!-- ... http://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
+      <div ng-show="form.$submitted || form.workingTitle.$touched">
+        <div ng-show="form.workingTitle.$error.required" class="alert alert-danger">What is the working title of your contest?</div>
+      </div>
+
+      <!-- ... http://stackoverflow.com/questions/17063000/ng-model-for-input class="form-control"-type-file
       <div class="form-group">
         <label for="headline">Image*</label>
-        <input type="file" ng-model="contest.image" name="image" required="" placeholder="Image"/>
+        <input class="form-control" type="file" ng-model="contest.image" name="image" required="" placeholder="Image"/>
       </div>
       <div ng-show="form.$submitted || form.image.$touched">
         <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your contest?</div>
@@ -50,51 +58,58 @@
       <!-- TODO: textarea -->
       <div class="form-group">
         <label for="description">Description*</label>
-        <input type="text" ng-model="contest.description" name="description" required="" placeholder="Description"/>
+        <input class="form-control" type="text" ng-model="contest.description" name="description" required="" placeholder="Description"/>
       </div>
-      <p>A longer description of your contest</p>
 
       <div ng-show="form.$submitted || form.description.$touched">
         <div ng-show="form.description.$error.required" class="alert alert-danger">What is the description of your contest?</div>
       </div>
 
       <div class="form-group">
-        <label for="startdate">Start date*</label>
-        <input type="date" ng-model="contest.startdate" name="startdate" required="" placeholder="YYYY-MM-DD"/>
+        <label for="startDate">Start date*</label>
+        <input class="form-control" type="date" ng-model="contest.startDate" name="startDate" required="" placeholder="YYYY-MM-DD"/>
       </div>
-      <div ng-show="form.$submitted || form.startdate.$touched">
-        <div ng-show="form.startdate.$error.required" class="alert alert-danger">What is the startdate of your contest?</div>
-        <div ng-show="!form.startdate.$valid" class="alert alert-danger">The date doesn't seem valid</div>
+      <div ng-show="form.$submitted || form.startDate.$touched">
+        <div ng-show="form.startDate.$error.required" class="alert alert-danger">What is the startDate of your contest?</div>
+        <div ng-show="!form.startDate.$valid" class="alert alert-danger">The date doesn't seem valid (should be YYYY-MM-DD)</div>
       </div>
 
       <div class="form-group">
-        <label for="enddate">End date*</label>
-        <input type="date" ng-model="contest.enddate" name="enddate" required="" placeholder="YYYY-MM-DD"/>
+        <label for="endDate">End date*</label>
+        <input class="form-control" type="date" ng-model="contest.endDate" name="endDate" required="" placeholder="YYYY-MM-DD"/>
       </div>
-      <div ng-show="form.$submitted || form.enddate.$touched">
-        <div ng-show="form.enddate.$error.required" class="alert alert-danger">What is the end date of your contest?</div>
-        <div ng-show="!form.enddate.$valid" class="alert alert-danger">The date doesn't seem valid</div>
+      <div ng-show="form.$submitted || form.endDate.$touched">
+        <div ng-show="form.endDate.$error.required" class="alert alert-danger">What is the end date of your contest?</div>
+        <div ng-show="!form.endDate.$valid" class="alert alert-danger">The date doesn't seem valid (should be YYYY-MM-DD)</div>
       </div>
 
-      <!--
-      <tt>value = {{example.value | date: "yyyy-MM-dd"}}</tt><br/>
-      <tt>form.enddate.$valid = {{form.enddate.$valid}}</tt><br/>
-      <tt>form.enddate.$error = {{form.enddate.$error}}</tt><br/>
-      <tt>form.$valid = {{form.$valid}}</tt><br/>
-      <tt>form.$error.required = {{!!form.$error.required}}</tt><br/>
-      -->
-
-
+      <!-- dropping this for now
       <div class="form-group">
         <label for="description">Only jury can vote</label>
-        <input type="checkbox" ng-model="contest.onlyJury" name="userAgree" required="" />
+        <input class="form-control" type="checkbox" ng-model="contest.onlyJury" name="userAgree" required="" />
       </div>
+    -->
 
-      <input type="button" ng-click="reset(form)" value="Reset" />
-      <input type="submit"  value="Save" />
+      <!--<input type="button" ng-click="reset(form)" value="Reset" />-->
+      <input type="submit" class="btn btn-success pull-right" value="Send" />
     </form>
-    <pre>contest = {{contest | json}}</pre>
   </div>
 
+<div class="col-md-6">
+  <h4>Headline</h4>
+  <p>The headline should attract people to your contest.</p>
+
+  <h4>Theme</h4>
+  <p>The theme is more technical. You can think of "Portraits" or "Flowers", etc.</p>
+
+  <h4>Working title</h4>
+  <p>The working title is a title that won't be displayed to the user but that will help you organize your contests
+</p>
+
+  <hr/>
+
+  <pre>contest = {{contest | json}}</pre>
+
+</div>
 
 </div>
