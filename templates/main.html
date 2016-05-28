@@ -14,17 +14,18 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		-->
 
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js" type="text/javascript"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.min.js" type="text/javascript"></script>
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.min.js" type="text/javascript"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.js" type="text/javascript"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-route.js" type="text/javascript"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular-resource.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.0/angular-ui-router.js" type="text/javascript"></script>
 		<script src="static/js/controllers.js"></script>
 		<script src="static/js/services.js"></script>
 		<script src="static/js/app.js"></script>
 		<script src="static/js/moment.min.js"></script>
 
 		<!-- added these to try and fix upload -->
-		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload-shim.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload-shim.js"></script>
         <!-- added these to try and fix upload -->
 
 				<!-- only for vote page -->
@@ -71,9 +72,8 @@
 		            <ul class="nav nav-pills pull-right">
 
 		                <li role="presentation" ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
-		                <li role="presentation" ng-class="{ active: isActive('/admin')}"><a href="/admin">Admin</a></li>
-		                <li role="presentation" ng-class="{ active: isActive('/add')}" ><a href="/add">Add contest</a></li>
-		                <li role="presentation" ng-class="{ active: isActive('/contests')}" ><a href="/contests">Contests</a></li>
+		                <li role="presentation" ng-class="{ active: isActive('/add')}" ><a ui-sref="create-contest">Add contest</a></li>
+		                <li role="presentation" ng-class="{ active: isActive('/contests')}" ><a ui-sref="contest-list">Contests</a></li>
 		                <li role="presentation" ng-class="{ active: isActive('/user/login')}" ><a target="_self" href="/user/login">Login</a></li>
 		                <li role="presentation" ng-class="{ active: isActive('/user/logout')}" ><a target="_self" href="/user/logout">Logout</a></li>
 		            </ul>
@@ -85,7 +85,7 @@
 
 		<div class="container"><span class="label label-info">main.html</span></div>
 		<div class="view-container">
-			<div ng-view class="view-frame container"></div>
+			<div ui-view class="view-frame container"></div>
 		</div>
 
 
