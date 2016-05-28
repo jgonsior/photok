@@ -8,7 +8,8 @@
 				Sort by:
 				<select ng-model="orderProp">
 					<option value="headline">Alphabetical</option>
-					<option value="createdDate">Newest</option>
+					<option value="createdDate">Date created</option>
+					<option value="endDate">End date</option>
 				</select>
 			</div>
 		</div>
@@ -30,7 +31,8 @@
 				<p><b>Theme:</b> {{contest.theme}}<br/>
 
 				<b>End date:</b> {{ contest.endDate }}</p>
-        <p><a href="contests/{{contest.id}}" class="btn btn-primary" role="button">See more</a></p>
+				<p ng-if="contest.past"><a href="contests/{{contest.id}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> See results</a></p>
+				<p ng-if="!contest.past"><a href="contests/{{contest.id}}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Participate</a></p>
       </div>
     </div>
 

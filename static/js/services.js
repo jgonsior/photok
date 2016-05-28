@@ -84,9 +84,10 @@ function ($q, $timeout, $http, $resource){
 		return deferred.promise;
 	}
 
-	function editContest(id, headline, workingTitle) {
+	function editContest(id, headline, theme, workingTitle, description, startDate, endDate) {
 		var deferred = $q.defer();
-		$http.put('/api/contests/'+id, {headline: headline, workingTitle: workingTitle, startDate: "2016-01-12 13:01:54.411227",endDate:"2016-01-12 13:01:54.411227", createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
+
+		$http.put('/api/contests/'+id, {headline: headline, theme: theme, workingTitle: workingTitle, description: description, startDate: startDate, endDate:endDate, createdDate: "2016-01-12 13:01:54.411227", voteMethod: "simple"})
 			// handle success
 			.success(function (data, status) {
 				if(status === 200){

@@ -42,7 +42,7 @@
       <!-- ... http://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
       <div class="form-group">
         <label for="headline">Image*</label>
-        <input type="file" ng-model="contest.image" name="image" required="" placeholder="Image"/>
+        <input type="file" ng-model="formValue.image" name="image" required="" placeholder="Image"/>
       </div>
       <div ng-show="form.$submitted || form.image.$touched">
         <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your contest?</div>
@@ -91,6 +91,7 @@
       <input type="submit" class="btn btn-success" value="Edit" /><hr/>
     </form>
     <pre>contest = {{contest | json}}</pre>
+    <pre>formValue = {{formValue | json}}</pre>
   </div>
     <div class="col-md-6">
       <h3 style="display:inline;">Participations</h3>

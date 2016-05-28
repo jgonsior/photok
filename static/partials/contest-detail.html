@@ -52,34 +52,66 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
 
 <div class="row">
-  <div class="col-lg-12 col-md-12 col-xs-12">
-		<h2><u>Contest name:</u> {{contest.headline}}</h2>
-    <p><b>Description:</b> {{contest.description}}</p>
+  <div class="col-lg-12 col-md-12 col-xs-12" style="text-align:center">
+		<h3>{{contest.headline}}</h3>
+    <p style="font-size:130%;font-weight:300;width:70%;margin:auto;">"{{contest.description}}"</p>
+    <p style="color:red;font-size:80%;">If you are an admin, you can <a href="/edit/{{contest.id}}">click here to edit</a> this contest.</p>
   </div>
 </div>
 
-<div class="row">
+<div class="row" style="background-color:#eaeaea;padding-top:1em">
     <div class="col-lg-3 col-md-3 col-xs-3 thumb">
         <a class="thumbnail" href="#">
             <img class="img-responsive" src="http://placehold.it/400x300" alt="">
         </a>
     </div>
-    <div class="col-lg-9 col-md-9 col-xs-9 thumb">
-      <h3>Information</h3>
-        <ul>
-  				<li><b>Created at:</b> {{contest.createdDate}}</li>
-          <li><b>Voting method:</b> {{contest.voteMethod}}</li>
-  				<li><b>Contest starts at:</b> {{contest.startDate}}</li>
-          <li><b>Participation possible until:</b> {{contest.endDate}}</li>
-          <li><b>Duration:</b> {{contest.duration}}</li>
-          <li><b ng-if="past">Cannot participate anymore sorry</b>
-          <b ng-if="!past">You still have <u>{{contest.span}}</u> to participate</b></li>
-        </ul>
-        <a href="" ng-click="participate=true"><button type="button" class="btn btn-success">Participate</button></a>
-        <a href="/edit/{{contest.id}}"><button type="button" class="btn btn-primary">Edit</button></a>
+    <div class="col-lg-9 col-md-9 col-xs-9 thumb" style="text-align:center">
+      <div class="row">
+        <div class="col-md-4"><span style="font-size:160%;font-weight:lighter">created</span><br/><span style="font-size:230%;">{{contest.createdDate}}</span></div>
+        <div class="col-md-4"><span style="font-size:160%;font-weight:lighter">started</span><br/><span style="font-size:230%;">{{contest.startDate}}</span></div>
+        <div class="col-md-4"><span style="font-size:160%;font-weight:lighter">can participate until</span><br/><span style="font-size:230%;">{{contest.endDate}}</span></div>
+      </div>
+      <hr/>
+      <div class="row" ng-if="!contest.past">
+        <div class="col-md-12" style="font-size:160%;font-weight:100">You still have <b>{{contest.span}}</b> to participate<br/>
+          <a ng-if="!contest.past" ng-click="displayPopUp()"><button type="button" class="btn btn-lg btn-success">Participate</button></a>
+        </div>
+      </div>
+      <div class="alert alert-danger" ng-if="contest.past"><b>Oops</b>, seems like you cannot participate anymore, sorry</div>
+
     </div>
 </div>
-<hr/>
+
+<div ng-if="contest.past">
+  <h3>Winners</h3>
+
+  <div ng-show="!hidewinners">
+    <div class="row" style="text-align:center;">
+      <div class="col-md-4">
+        <h2>#2</h2>
+        <img src="{{winners.second.path}}" width="75%"/><br/>
+        <p style="margin-top:2em">{{winners.second.title}}</p>
+      </div>
+      <div class="col-md-4" style="font-size:160%;">
+        <h2>#1</h2>
+        <img src="{{winners.first.path}}" width="95%"/><br/>
+        <p style="margin-top:2em">{{winners.first.title}}</p>
+      </div>
+      <div class="col-md-4">
+        <h2>#3</h2>
+        <img src="{{winners.third.path}}" width="75%"/><br/>
+        <p style="margin-top:2em">{{winners.third.title}}</p>
+      </div>
+    </div>
+  </div>
+  <div ng-show="hidewinners">
+    <div class="alert alert-danger" style="text-align:center;"><b>Oops</b>, the organizer didn't deicde on a winner just yet</div>
+  </div>
+
+
+
+</div>
+
 <h3>Participations</h3>
 
   <div class="row">

@@ -35,7 +35,7 @@ function($http, $scope, Contest) {
 			});
 	});
 
-	$scope.orderProp = 'createdDate';
+	$scope.orderProp = 'endDate';
 }]);
 
 
@@ -49,7 +49,12 @@ function($http, $scope, Contest) {
 photokControllers.controller('ContestDetailController', ['$http', '$scope', '$routeParams', 'Contest', 'ContestImages','ImageParticipation',
 function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation) {
 
+	$scope.participate = false;
 	var contest = $routeParams.contestId;
+
+	$scope.displayPopUp = function(){
+		$scope.participate = true;
+	}
 
 	// Get the data for the contest
 	$http.get('api/contests/' + contest).success(function(result) {
@@ -58,7 +63,7 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 		var now = moment();
 		result.past = (now > date);
 		result.duration = date - moment(result.startDate);
-		result.span = date - now;
+		result.span = moment(date).fromNow(true); //date - now;
 
 		result.startDate = moment(result.startDate).format('DD MMM YYYY');
 		result.endDate = moment(result.endDate).format('DD MMM YYYY');
@@ -68,9 +73,18 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 	// Get the images for the contest
 	// store them in an array so that we can use .push() after the form is sent
 	$scope.participations = [];
+	$scope.winners = {};
+
 	$http.get('api/images/contest/' + contest).success(function(result) {
 			angular.forEach(result, function(value, key) {
-				$scope.participations.push(value);
+				var c = angular.copy(value);
+				$scope.participations.push(c);
+
+				if (c.prize == 1) $scope.winners.first = c;
+				if (c.prize == 2) $scope.winners.second = c;
+				if (c.prize == 3) $scope.winners.third = c;
+				$scope.hidewinners = angular.equals($scope.winners,{});
+
 			});
 	});
 
@@ -147,17 +161,39 @@ function($http, $scope, $routeParams, Contest, ContestImages, ImageParticipation
 photokControllers.controller('EditContestController', ['$http', '$scope', '$routeParams', '$window', 'Contest', 'ContestImages','ImageParticipation',
 function($http, $scope, $routeParams, $window, Contest, ContestImages, ImageParticipation) {
 
-	var contest = $routeParams.contestId;
+	var contestId = $routeParams.contestId;
 
 	// Get the data for the contest
-	$http.get('api/contests/' + contest).success(function(result) {
-  	$scope.contest = result;
+	$http.get('api/contests/' + contestId).success(function(result) {
+		//console.log("result.endDate: "+result.endDate);
+		//console.log("result.endDate (moment): "+moment(result.endDate).format('MM'));
+
+		// TODO hack: month - 1 because Date moves the date by one month...
+		// for some reason
+
+		result.endDate = new Date(
+			moment(result.endDate).format('YYYY'),
+			moment(result.endDate).format('MM')-1,
+			moment(result.endDate).format('DD'));
+
+		result.startDate = new Date(
+			moment(result.startDate).format('YYYY'),
+			moment(result.startDate).format('MM')-1,
+			moment(result.startDate).format('DD'));
+
+		//console.log("result.endDate: "+result.endDate);
+		//console.log("result.endDate (moment): "+moment(result.endDate).format('MM'));
+
+		$scope.contest = result;
+
+		//console.log("$scope.contest.endDate: "+moment($scope.contest.endDate).format('YYYY-MM-DD'));
+
 	});
 
 	// Get the images for the contest
 	// store them in an array so that we can use .push() after the form is sent
 	$scope.participations = [];
-	$http.get('api/images/contest/' + contest).success(function(result) {
+	$http.get('api/images/contest/' + contestId).success(function(result) {
 			angular.forEach(result, function(value, key) {
 				$scope.participations.push(value);
 			});
@@ -166,11 +202,14 @@ function($http, $scope, $routeParams, $window, Contest, ContestImages, ImagePart
 	// Function called when form is sent
 	$scope.editContest = function () {
 
-		alert("SENDING: "+$scope.contest.headline+"; id : "+$scope.contest.id);
+		alert("EDITING: "+$scope.contest.workingTitle);
 
 		// Call the service function that will connect with the API
 		// TODO: Add more parameters (: replace fake data in the service)
-		Contest.editContest($scope.contest.id,$scope.contest.headline, $scope.contest.workingtitle)
+		Contest.editContest($scope.contest.id,$scope.contest.headline, $scope.contest.theme,
+		$scope.contest.workingTitle, $scope.contest.description,
+		moment($scope.contest.startDate).format('YYYY-MM-DD HH:mm:ss.SSS'),
+		moment($scope.contest.endDate).format('YYYY-MM-DD HH:mm:ss.SSS'))
 			// handle success
 			.then(function () {
 				alert('CONTROLLER: Success');
@@ -181,8 +220,7 @@ function($http, $scope, $routeParams, $window, Contest, ContestImages, ImagePart
 				alert('CONTROLLER: Error');
 			});
 
-			alert("SENDING: Done");
-
+			alert("EDITING: Done");
 	};
 
 	// Function called when delete button is clicked
