@@ -24,8 +24,8 @@
        ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]"
        ng-if="contests[i] != null">
 			 <div class="thumbnail">
-				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-success" ng-if="!contest.past">You can still participate to this contest</div>
-				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-danger" ng-if="contest.past">You cannot participate to this contest</div>
+				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-success" ng-if="!contests[i].past">You can still participate to this contest</div>
+				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-danger" ng-if="contests[i].past">You cannot participate to this contest</div>
 
 					<img src="http://placehold.it/400x300" alt="Contest #{{contest.id}}">
 					<div class="caption">
