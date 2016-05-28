@@ -59,6 +59,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
   </div>
 </div>
 
+
 <div class="row" style="background-color:#eaeaea;padding-top:1em">
     <div class="col-lg-3 col-md-3 col-xs-3 thumb">
         <a class="thumbnail" href="#">
@@ -114,33 +115,22 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
 <h3>Participations</h3>
 
-  <div class="row">
+<div class="row" ng-repeat="p in participations track by $index" ng-if="$index % 4 == 0">
 
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb" ng-repeat="i in participations">
+  <div class="col-md-3 thumb"
+       ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]"
+       ng-if="participations[i] != null">
+
         <a class="thumbnail" href="#">
-            <img class="img-responsive" src="{{i.path}}" alt="">
+            <img class="img-responsive" src="{{participations[i].path}}" alt="">
         </a>
-        <h4 class="text-center">{{i.title}}</h4>
+        <h4 class="text-center">{{participations[i].title}} {{$index}}</h4>
         <ul>
           <li><b>real data</b></li>
-          <li>title: {{i.title}}</li>
-          <li>id: {{i.id}}</li>
-          <li>uploadedOn: {{i.uploadedOn}}</li>
-          <li>userId: {{i.userId}}</li>
-        </ul>
-    </div>
-
-    <div class="col-lg-3 col-md-3 col-xs-3 thumb">
-        <a class="thumbnail" href="#">
-            <img class="img-responsive" src="http://placehold.it/400x300" alt="">
-        </a>
-        <h4 class="text-center">FAKE_DATA_001</h4>
-        <ul>
-          <li><b>fake data</b></li>
-          <li>title: fake_title</li>
-          <li>id: 000</li>
-          <li>uploadedOn: fake_date</li>
-          <li>userId: 000</li>
+          <li>title: {{participations[i].title}}</li>
+          <li>id: {{participations[i].id}}</li>
+          <li>uploadedOn: {{participations[i].uploadedOn}}</li>
+          <li>userId: {{participations[i].userId}}</li>
         </ul>
     </div>
 

@@ -1,5 +1,6 @@
 import os
 from datetime import date
+import random
 from flask import Flask, render_template, request, send_file, make_response
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
@@ -92,6 +93,13 @@ with app.app_context():
         db.session.add(image2)
         db.session.add(image3)
         db.session.add(image4)
+
+        # Third contest has lots of pictures now
+        words = ["Power", "Flower", "Art", "Photo", "Best"]
+        path = ["T","S","O","B"]
+        for i in range(0,15):
+            image = Image({'uploadedOn': None, 'title': words[random.randint(0, 4)]+" "+words[random.randint(0, 4)], 'path': "static/images/"+path[random.randint(0, 3)]+".jpg", 'prize': 0, 'userId': 1, 'contestId': 3})
+            db.session.add(image)
 
         # Give points to images
         # TODO: not needed right now
