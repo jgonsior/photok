@@ -50,7 +50,7 @@ photokControllers.controller('ContestDetailController', ['$http', '$scope', '$st
 function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation) {
 
 	$scope.participate = false;
-	var contest = $routeParams.contestId;
+	var contest = $stateParams.contestId;
 
 	$scope.displayPopUp = function(){
 		$scope.participate = true;
