@@ -2,7 +2,7 @@ from models import db
 from datetime import datetime
 from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
-
+from flask_jwt import jwt_required
 
 class Vote(db.Model):
 
@@ -41,6 +41,7 @@ for prop in class_mapper(Vote).iterate_properties:
 
 
 class VoteApi(Resource):
+    decorators = [jwt_required()]
     def get(self, voteId):
         return prepare_dict_for_json(Vote.query.get(voteId).__dict__)
 
@@ -67,6 +68,7 @@ class VoteApi(Resource):
 
 
 class VoteListApi(Resource):
+    decorators = [jwt_required()]
     def get(self):
         votes = {}
         for c in Vote.query.all():

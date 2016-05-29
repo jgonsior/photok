@@ -3,3 +3,4 @@ Flask-SQLAlchemy==2.1
 Flask-User==0.6.8
 SQLAlchemy==1.0.12
 Flask-RESTful==0.3.5
+Flask-jwt==0.3.2
