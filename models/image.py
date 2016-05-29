@@ -4,6 +4,7 @@ from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
 import sqlalchemy
 from models.user import User
+from flask_jwt import jwt_required
 
 class Image(db.Model):
 
@@ -14,7 +15,7 @@ class Image(db.Model):
     path = db.Column(db.String(255), nullable=False)
     title = db.Column(db.String(255), nullable=False)
     exifData = db.Column(db.Text)
-    prize = db.Column(db.String(255), nullable=False)
+    prize = db.Column(db.Integer, nullable=False)
 
     # Relationships
     userId = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
@@ -48,6 +49,7 @@ for prop in class_mapper(Image).iterate_properties:
 
 
 class ImageApi(Resource):
+    decorators = [jwt_required()]
     def get(self, imageId):
         return prepare_dict_for_json(Image.query.get(imageId).__dict__)
 
@@ -73,6 +75,7 @@ class ImageApi(Resource):
         return 201
 
 class ImageListApi(Resource):
+    decorators = [jwt_required]
     def get(self, contestId):
         images = {}
         for c in Image.query.filter(Image.contestId == contestId):

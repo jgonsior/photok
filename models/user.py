@@ -31,6 +31,10 @@ class User(db.Model, UserMixin):
     # added on our own, the rest is from the flask-user documentation
     profilePicture = db.Column(db.String(255), server_default='defaultProfilePicture.jpg')
 
+    
+    def __repr__(self):
+        return '<User %r>' % self.username
+
 
 # Define the UserRoles DataModel
 class UserRoles(db.Model):

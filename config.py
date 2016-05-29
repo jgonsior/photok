@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 class Config(object):
     USER_APP_NAME = 'photok'
@@ -39,3 +40,4 @@ class Config(object):
         DEBUG = True
         SECRET_KEY='rHh4lhSreFb0d7jktTMP53FuXz79hd4VzoEpVnER'
         CSRF_ENABLED=False
+        JWT_EXPIRATION_DELTA=timedelta(days=10)

@@ -1,5 +1,6 @@
 import os
 from datetime import date
+import random
 from flask import Flask, render_template, request, send_file, make_response
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
@@ -12,6 +13,9 @@ from models.vote import Vote, VoteApi, VoteListApi
 from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
+from flask_jwt import JWT, jwt_required, current_identity
+from werkzeug.security import safe_str_cmp
+
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -48,15 +52,19 @@ with app.app_context():
 
         argCon1 = {
                 "headline": "Saint Saturnin les Avignon's most beautiful spring flower",
+                "theme": "flower",
                 "workingTitle": "spring contest 2016",
+                "description": "This contest takes place in France, the most beautiful country there is",
                 "startDate": datetime.utcnow() - timedelta(days=30),
                 "endDate": datetime.utcnow() - timedelta(days=20),
                 "voteMethod": "simple"
                 }
 
         argCon2 = {
-                "headline": "Klotzsche's most beautiful autumn flower",
+                "headline": "Klotzsche's most beautiful pint of beer",
+                "theme": "beer",
                 "workingTitle": "summer contest 2016",
+                "description": "Beer is the world's most widely consumed and probably the oldest alcoholic beverage; it is the third most popular drink overall, after water and tea. The production of beer is called brewing, which involves the fermentation of starches, mainly derived from cereal grains most commonly malted barley, although wheat, maize (corn), and rice are widely used.",
                 "startDate": datetime.utcnow() - timedelta(days=20),
                 "endDate": datetime.utcnow() - timedelta(days=10),
                 "voteMethod": "simple"
@@ -65,8 +73,10 @@ with app.app_context():
         argCon3 = {
             "headline": "Roelofarendsveen's most beautiful winter flower",
                 "workingTitle": "winter contest 2016",
+                "theme": "flower",
+                "description": "If you manage to say the name of this city, you win",
                 "startDate": datetime.utcnow() - timedelta(days=10),
-                "endDate": datetime.utcnow(),
+                "endDate": datetime.utcnow() + timedelta(days=10),
                 "voteMethod": "simple"
                 }
 
@@ -78,20 +88,33 @@ with app.app_context():
         db.session.add(contest2)
         db.session.add(contest3)
 
-        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': "Gold", 'userId': 1, 'contestId': 1})
-        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': "Silver", 'userId': 1, 'contestId': 1})
-        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': "Bronze", 'userId': 1, 'contestId': 1})
+        image1 = Image({'uploadedOn': None, 'title': "Tulip", 'path': "static/images/T.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
+        image2 = Image({'uploadedOn': None, 'title': "Sunflower", 'path': "static/images/S.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
+        image3 = Image({'uploadedOn': None, 'title': "Onion", 'path': "static/images/O.jpg", 'prize': 0, 'userId': 1, 'contestId': 1})
+        image4 = Image({'uploadedOn': None, 'title': "The Mighty Pint", 'path': "static/images/B.jpg", 'prize': 0, 'userId': 1, 'contestId': 2})
         db.session.add(image1)
         db.session.add(image2)
         db.session.add(image3)
+        db.session.add(image4)
 
-        # fifty points to griffyndor
+        # Third contest has lots of pictures now
+        words = ["Power", "Flower", "Art", "Photo", "Best"]
+        path = ["T","S","O","B"]
+        for i in range(0,15):
+            image = Image({'uploadedOn': None, 'title': words[random.randint(0, 4)]+" "+words[random.randint(0, 4)], 'path': "static/images/"+path[random.randint(0, 3)]+".jpg", 'prize': 0, 'userId': 1, 'contestId': 3})
+            db.session.add(image)
+
+        # Give points to images
+        # TODO: not needed right now
+        """
         vote1 = Vote("50", image1, contest1)
         vote2 = Vote("20", image2, contest1)
         vote3 = Vote("10", image3, contest1)
         db.session.add(vote1)
         db.session.add(vote2)
         db.session.add(vote3)
+        """
+
         db.session.commit()
 
     # define REST api entry points
@@ -104,11 +127,27 @@ with app.app_context():
     api.add_resource(VoteApi, '/api/votes/<voteId>')
     api.add_resource(VoteListApi, '/api/votes')
 
+# some help functions to make the authentication with jwt working
+def authenticate(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and userManager.verify_password(password, user):
+        print("hui")
+        return user
+
+def identity(payload):
+    user_id = payload['identity']
+    return User.query.get(user_id)
+jwt = JWT(app, authenticate, identity)
+
 
 @app.route('/')
 @app.route('/admin')
 @app.route('/add')
 @app.route('/edit/<contestId>')
+@app.route('/vote/<contestId>')
+@app.route('/login')
+@app.route('/logout')
+@app.route('/error-404')
 def basic_pages(**kwargs):
     return render_template('main.html')
 

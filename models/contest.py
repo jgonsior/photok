@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
 import sqlalchemy
+from flask_jwt import jwt_required
 
 
 class Contest(db.Model):
@@ -11,6 +12,8 @@ class Contest(db.Model):
 
     headline = db.Column(db.String(255), nullable=False)
     workingTitle = db.Column(db.String(255), nullable=False)
+    theme = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text)
     createdDate = db.Column(db.DateTime(), nullable=False)
     startDate = db.Column(db.DateTime(), nullable=False)
     endDate = db.Column(db.DateTime(), nullable=False)
@@ -46,6 +49,8 @@ for prop in class_mapper(Contest).iterate_properties:
 
 
 class ContestApi(Resource):
+    # protecd the api with a jwt token
+    decorators = [jwt_required()]
     def get(self, contestId):
         return prepare_dict_for_json(Contest.query.get(contestId).__dict__)
 
@@ -72,6 +77,7 @@ class ContestApi(Resource):
 
 
 class ContestListApi(Resource):
+    decorators = [jwt_required()]
     def get(self):
         contests = []
         for c in Contest.query.all():

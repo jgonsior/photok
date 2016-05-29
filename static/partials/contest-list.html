@@ -8,22 +8,35 @@
 				Sort by:
 				<select ng-model="orderProp">
 					<option value="headline">Alphabetical</option>
-					<option value="createdDate">Newest</option>
+					<option value="createdDate">Date created</option>
+					<option value="endDate">End date</option>
 				</select>
 			</div>
 		</div>
 
-	</div>
-	<!-- end of col -->
+	</div>	<!-- end of col -->
+</div>
 
-	<div class="col-md-3" ng-repeat="contest in contests | filter:query | orderBy:orderProp"
-	 class="thumbnail contest-listing">
-		<a href="contests/{{contest.id}}">
-			contests/{{contest.id}}
-			<img class="img-responsive" src="http://placehold.it/400x300" alt="">
-			<span>{{contest.id}} | {{contest.headline}}</span>
-		</a>
-	</div>
-	<!-- end of col -->
 
+
+<div class="row" ng-repeat="contest in contests track by $index" ng-if="$index % 4 == 0">
+  <div class="col-md-3 contest-listing"
+       ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]"
+       ng-if="contests[i] != null">
+			 <div class="thumbnail">
+				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-success" ng-if="!contests[i].past">You can still participate to this contest</div>
+				 <div style="font-size:90%;padding:0.3em 0.7em;margin:0.1em;margin-bottom:0.4em" class="alert alert-danger" ng-if="contests[i].past">You cannot participate to this contest</div>
+
+					<img src="http://placehold.it/400x300" alt="Contest #{{contest.id}}">
+					<div class="caption">
+						<h4>{{contests[i].headline}}</h4>
+						<p>{{contests[i].description | limitTo:130 }}<span ng-if="contests[i].description.length > 130">...</span></p>
+						<p><b>Theme:</b> {{contests[i].theme}}<br/>
+
+						<b>End date:</b> {{ contests[i].endDate }}</p>
+						<p ng-if="contests[i].past"><a href="contests/{{contests[i].id}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> See results</a></p>
+						<p ng-if="!contests[i].past"><a href="contests/{{contests[i].id}}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> Participate</a></p>
+					</div>
+			</div>
+  </div>
 </div>
