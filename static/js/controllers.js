@@ -21,15 +21,14 @@ photokControllers.controller('HeaderController', ['$scope', '$location','$localS
 /**
  * Controller for the authentication form
  */
-photokControllers.controller('LoginController', ['$scope', 'AuthenticationService', function($scope, AuthenticationService) {
+photokControllers.controller('LoginController', ['$scope', 'AuthenticationService', '$state', '$stateParams', function($scope, AuthenticationService, $state, $stateParams) {
 	$scope.submit = function() {
-		$scope.loading = true;
 		AuthenticationService.login($scope.username, $scope.password, function (result) {
 			if (result === true) {
-				$scope.loading = false;
+				//redirect to the original state
+				$state.go($stateParams.from)
 			} else {
 				$scope.error = 'Username or password is incorrect';
-				$scope.loading = false;
 			}
 		});	
 	}

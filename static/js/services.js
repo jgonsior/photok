@@ -140,7 +140,6 @@ photokServices.factory('AuthenticationService', ['$http', '$localStorage', funct
 		login: login,
 		logout: logout
 	});
-	console.log('hui');
 
 	function login(username, password, callback) {
 		$http.post('auth', {username: username, password:password})
@@ -148,15 +147,14 @@ photokServices.factory('AuthenticationService', ['$http', '$localStorage', funct
 				if(response.access_token) {
 					$localStorage.currentUser = {username: username, access_token: response.access_token};
 					callback(true);
-				} else {
-					callback(false);
 				}
+			})
+			.error(function(response) {
+				callback(false);
 			});
 	}
 
 	function logout() {
-	//	console.log($http.config.headers['Authorization']);
 		delete $localStorage.currentUser;
-//		$http.config.headers.common.Authorization = '';
 	}
 }]);

@@ -59,7 +59,10 @@ photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '
 			controller: 'VoteContestController'
 		})
 		.state('login', {
-			url: "/login",
+			url: "/login?from",
+			params: {
+				from: "contest-list"
+			},
 			title: "Please log yourself in",
 			templateUrl: 'static/partials/login.html',
 			controller: 'LoginController'
@@ -85,12 +88,11 @@ photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '
 photokApp.run(['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) { 
 		if(!$localStorage.currentUser) {
-			console.log(toState.name);
 			if(toState.name !== "login") {
 				//stop the default route
 				event.preventDefault(); 
 				//redirect to login page
-				$state.go('login');
+				$state.go('login', {from: toState.name});
 			}
 		}
 	});
