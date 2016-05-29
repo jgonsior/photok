@@ -49,6 +49,7 @@ for prop in class_mapper(Contest).iterate_properties:
 
 
 class ContestApi(Resource):
+    # protecd the api with a jwt token
     decorators = [jwt_required()]
     def get(self, contestId):
         return prepare_dict_for_json(Contest.query.get(contestId).__dict__)

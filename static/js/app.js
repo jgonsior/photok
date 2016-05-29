@@ -7,21 +7,25 @@ var photokApp = angular.module('photok', [
 	'ngStorage'
 ]);
 
-photokApp.factory('httpRequestInterceptor', ['$localStorage', function ($localStorage) {
-  return {
-    request: function (config) {
+photokApp.factory('httpRequestInterceptor', ['$localStorage', '$injector', function ($localStorage, $injector) {
+	return {
+		request: function (config) {
 
-      config.headers['Authorization'] = 'JWT ' + $localStorage.currentUser.access_token;
-      return config;
-    }
-  };
+			if($localStorage.currentUser) {
+				//yay, we're logged in!
+				config.headers['Authorization'] = 'JWT ' + $localStorage.currentUser.access_token;
+			}
+			return config;
+		}
+	};
 }]);
 
 photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
 
 	$httpProvider.interceptors.push('httpRequestInterceptor');
-	//for any unmatched url redirect to /
-	$urlRouterProvider.otherwise("/error-404");
+
+	//for any unmatched url redirect to an error page
+	$urlRouterProvider.otherwise("contests");
 
 	$stateProvider
 		.state('contest-list', {
@@ -54,20 +58,44 @@ photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '
 			templateUrl: 'static/partials/vote-contest.html',
 			controller: 'VoteContestController'
 		})
+		.state('login', {
+			url: "/login",
+			title: "Please log yourself in",
+			templateUrl: 'static/partials/login.html',
+			controller: 'LoginController'
+		})
+		.state('logout', {
+			url: "/logout",
+			title: "logging you out…",
+			templateUrl: 'static/partials/logout.html',
+			controller: 'LogoutController'
+		})
 		.state('error-404', {
-			url: "error-404",
+			url: "/error-404",
 			title: "Oops",
 			templateUrl: "static/partials/error-404.html"
 		});
 
-		// make urls look nicer -> without the annoying #
+
+	// make urls look nicer -> without the annoying #
 		$locationProvider.html5Mode(true);
 }]);
 
 // In order to change the <title> tag depending on the page
-photokApp.run(['$rootScope', '$state',  function($rootScope, $state) {
+photokApp.run(['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) { 
+		if(!$localStorage.currentUser) {
+			console.log(toState.name);
+			if(toState.name !== "login") {
+				//stop the default route
+				event.preventDefault(); 
+				//redirect to login page
+				$state.go('login');
+			}
+		}
+	});
+
 	$rootScope.$on('$stateChangeSuccess', function (event, current, previous) {
 		$rootScope.title = $state.current.title;
 	});
 }]);
-

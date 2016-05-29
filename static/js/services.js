@@ -155,7 +155,8 @@ photokServices.factory('AuthenticationService', ['$http', '$localStorage', funct
 	}
 
 	function logout() {
+	//	console.log($http.config.headers['Authorization']);
 		delete $localStorage.currentUser;
-		$http.defaults.headers.common.Authorization = '';
+//		$http.config.headers.common.Authorization = '';
 	}
 }]);

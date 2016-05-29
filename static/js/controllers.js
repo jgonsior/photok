@@ -1,5 +1,6 @@
 var photokControllers = angular.module('photokControllers', [
-	'photokServices'
+	'photokServices',
+	'ngStorage'
 ]);
 
 /**
@@ -7,17 +8,20 @@ var photokControllers = angular.module('photokControllers', [
  * -----------------
  * Only here to update the navbar
  */
-photokControllers.controller('HeaderController', ['$scope', '$location',function($scope, $location) {
+photokControllers.controller('HeaderController', ['$scope', '$location','$localStorage', function($scope, $location, $localStorage) {
 	$scope.isActive = function (viewLocation) {
 		return viewLocation === $location.path();
 	};
+	$scope.username = " julius";
+	if($localStorage.currentUser) {
+		console.log("hallo" + $localStorage.currentUser.username);
+		$scope.username = $localStorage.currentUser.username;
+	}
 }]);
-
 /**
  * Controller for the authentication form
  */
-photokControllers.controller('AuthenticationController', ['$scope', 'AuthenticationService', function($scope, AuthenticationService) {
-	console.log("hui");
+photokControllers.controller('LoginController', ['$scope', 'AuthenticationService', function($scope, AuthenticationService) {
 	$scope.submit = function() {
 		$scope.loading = true;
 		AuthenticationService.login($scope.username, $scope.password, function (result) {
@@ -29,6 +33,10 @@ photokControllers.controller('AuthenticationController', ['$scope', 'Authenticat
 			}
 		});	
 	}
+}]);
+
+photokControllers.controller('LogoutController', ['AuthenticationService', function(AuthenticationService) {
+	AuthenticationService.logout();
 }]);
 
 /**
