@@ -132,33 +132,24 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+# TODO: maybe move this? does it belong here?
 @app.route('/api/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        name =  request.form["name"] # get name from post
         # check if the post request has the file part
         if 'file' not in request.files:
-            return "1"
+            return "-1"
         file = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
-            return "2"
+            return "-2"
         if file and allowed_file(file.filename):
             filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return "3"
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
-
-
-
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], name))
+            return "0"
+    return "-3"
 
 @app.route('/')
 @app.route('/admin')

@@ -3,7 +3,8 @@
 var photokApp = angular.module('photok', [
 	'ui.router',
 	'photokServices',
-	'photokControllers'
+	'photokControllers',
+	'ngFileUpload'
 ]);
 
 photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function($locationProvider, $stateProvider, $urlRouterProvider) {
