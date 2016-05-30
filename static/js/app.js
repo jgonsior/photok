@@ -4,7 +4,7 @@ var photokApp = angular.module('photok', [
 	'ui.router',
 	'photokServices',
 	'photokControllers',
-	'ngStorage'
+	'ngStorage',
 	'ngFileUpload'
 ]);
 
