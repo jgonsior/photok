@@ -1,7 +1,7 @@
 import os
 from datetime import date
 import random
-from flask import Flask, render_template, request, send_file, make_response
+from flask import Flask, render_template, request, send_file, make_response, redirect, url_for
 from flask_user import roles_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_restful import reqparse, Resource, Api
 from wtforms.validators import ValidationError
@@ -14,8 +14,12 @@ from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
 from datetime import datetime, timedelta, date
 
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+
 app = Flask(__name__)
 app.config.from_object('config.Config')
+app.config['UPLOAD_FOLDER'] = "./static/images"
 db.init_app(app)
 api = Api(app)
 
@@ -123,6 +127,37 @@ with app.app_context():
 
     api.add_resource(VoteApi, '/api/votes/<voteId>')
     api.add_resource(VoteListApi, '/api/votes')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/api/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            return "1"
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit a empty part without filename
+        if file.filename == '':
+            return "2"
+        if file and allowed_file(file.filename):
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return "3"
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+
 
 
 @app.route('/')

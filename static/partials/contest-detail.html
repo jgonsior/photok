@@ -9,7 +9,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
     <hr/>
 
-    <form name="form" class="css-form" novalidate ng-submit="sendImage()">
+    <form enctype="multipart/form-data" name="form" action="/api/upload" method="post" class="css-form" novalidate>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -23,7 +23,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
           <div class="form-group">
             <label for="image">Image*</label>
-            <input type="file" ng-model="participation.image" name="image" required="" placeholder="Image"/>
+            <input type="file" ng-model="participation.image" name="file" required="" placeholder="Image"/>
           </div>
           <div ng-show="form.$submitted || form.image.$touched">
             <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your participation?</div>
