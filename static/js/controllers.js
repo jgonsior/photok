@@ -30,7 +30,7 @@ photokControllers.controller('LoginController', ['$scope', 'AuthenticationServic
 			} else {
 				$scope.error = 'Username or password is incorrect';
 			}
-		});	
+		});
 	}
 }]);
 
@@ -62,13 +62,16 @@ photokControllers.controller('ContestListController', ['$http', '$scope', 'Conte
 
 
 /**
- *	Contest controller (details)
- * ----------------------------
- * Get the data for a specific contest (id given in the route)
- * Get the images sent for a contest
- * Connect with the API for sending an image for the contest
- */
-photokControllers.controller('ContestDetailController', ['$http', '$scope', '$stateParams', 'Contest', 'ContestImages','ImageParticipation', function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation) {
+*	Contest controller (details)
+* ----------------------------
+* Get the data for a specific contest (id given in the route)
+* Get the images sent for a contest
+* Connect with the API for sending an image for the contest
+*/
+photokControllers.controller('ContestDetailController', ['$http', '$scope', '$stateParams', 'Contest', 'ContestImages','ImageParticipation', 'Upload',
+function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation, Upload) {
+
+	$scope.participation = {};
 
 	$scope.participate = false;
 	var contest = $stateParams.contestId;
@@ -139,11 +142,25 @@ photokControllers.controller('ContestDetailController', ['$http', '$scope', '$st
 		});
 	}
 
+	// upload file
+	$scope.upload = function (file, name) {
+			Upload.upload({
+					url: 'api/upload',
+					data: {file: file, name: name}
+			}).then(function (resp) {
+					console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+			}, function (resp) {
+					console.log('Error status: ' + resp.status);
+			}, function (evt) {
+					var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+			});
+	};
+
 	// Function called when form is sent
 	$scope.sendImage = function () {
 
 		alert("SENDING: "+$scope.participation.title+" for contest #"+$stateParams.contestId);
-		//alert("got image: "+$scope.participation.image);
 
 		// generate a token functions
 		var rand = function() {
@@ -154,21 +171,30 @@ photokControllers.controller('ContestDetailController', ['$http', '$scope', '$st
 			return rand();
 		};
 
-		// Call the service function that will connect with the API
-		ImageParticipation.sendImage($scope.participation.title, "static/images/"+token(), "exif-fake-data",contest,"1")
-		// handle success
-			.then(function () {
-				alert('Success');
-			})
-		// handle error
-			.catch(function () {
-				//$scope.error = true;
-				alert('Error');
-			});
+		var basename = token()+".jpg";
+		var name = "static/images/"+basename;
 
-		// Add the image to the view
+    // Call the service function that will connect with the API
+		// TODO: send some real data (contest number)
+    ImageParticipation.sendImage($scope.participation.title, name, "exif-fake-data",contest,"1")
+      // handle success
+      .then(function () {
+				alert('[ctrl] success... sending image');
+
+				if ($scope.form.file.$valid && $scope.file) {
+        	$scope.upload($scope.file, basename);
+					alert('[upload] done');
+      	}
+				else alert('[upload] error');
+      })
+      .catch(function () {
+        alert('[ctrl] error');
+      });
+
+			// Add the image to the view
 			// TODO: maybe try to get the *id* from the call above
-			$scope.add($scope.participation.title, "static/images/"+token(), "exif-fake-data",contest,"1");
+			// TODO: the image doesn't print even if the path is correct...
+			$scope.add($scope.participation.title, name, "exif-fake-data",contest,"1");
 			$scope.participate = false;
 	};
 

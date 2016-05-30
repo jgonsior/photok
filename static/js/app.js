@@ -5,6 +5,7 @@ var photokApp = angular.module('photok', [
 	'photokServices',
 	'photokControllers',
 	'ngStorage'
+	'ngFileUpload'
 ]);
 
 photokApp.factory('httpRequestInterceptor', ['$localStorage', '$injector', function ($localStorage, $injector) {
@@ -86,11 +87,11 @@ photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '
 
 // In order to change the <title> tag depending on the page
 photokApp.run(['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
-	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) { 
+	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
 		if(!$localStorage.currentUser) {
 			if(toState.name !== "login") {
 				//stop the default route
-				event.preventDefault(); 
+				event.preventDefault();
 				//redirect to login page
 				$state.go('login', {from: toState.name});
 			}
