@@ -7,7 +7,6 @@ from flask_jwt import jwt_required
 
 
 class Contest(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
 
     headline = db.Column(db.String(255), nullable=False)
@@ -20,11 +19,12 @@ class Contest(db.Model):
     voteMethod = db.Column(db.String(255), nullable=False)
 
     def __init__(self, args):
-        self.createdDate =  datetime.utcnow()
-        for k,v in args.iteritems():
+        self.createdDate = datetime.utcnow()
+        for k, v in args.iteritems():
             # if k == "createdDate" and v is None:
             #     v = datetime.utcnow()
             setattr(self, k, v)
+
 
 # 1. get contests from database
 # 2. define all reqired arguments
@@ -34,8 +34,8 @@ class Contest(db.Model):
 
 # converts f.e. datetime objects to strings
 def prepare_dict_for_json(d):
-    del(d['_sa_instance_state'])
-    for k,v in d.iteritems():
+    del (d['_sa_instance_state'])
+    for k, v in d.iteritems():
         if isinstance(v, datetime):
             d[k] = str(v)
     return d
@@ -51,6 +51,7 @@ for prop in class_mapper(Contest).iterate_properties:
 class ContestApi(Resource):
     # protecd the api with a jwt token
     decorators = [jwt_required()]
+
     def get(self, contestId):
         return prepare_dict_for_json(Contest.query.get(contestId).__dict__)
 
@@ -69,15 +70,16 @@ class ContestApi(Resource):
             if v is not None:
                 # parse datetime back
                 if isinstance(Contest.__table__.c[k].type,
-                        sqlalchemy.sql.sqltypes.DateTime):
+                              sqlalchemy.sql.sqltypes.DateTime):
                     v = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
-                db.session.query(Contest).filter_by(id=contestId).update({k:v})
+                db.session.query(Contest).filter_by(id=contestId).update({k: v})
         db.session.commit()
         return 201
 
 
 class ContestListApi(Resource):
     decorators = [jwt_required()]
+
     def get(self):
         contests = []
         for c in Contest.query.all():
@@ -88,11 +90,11 @@ class ContestListApi(Resource):
     # post -> add new contest
     def post(self):
         args = parser.parse_args()
-        for k,v in args.iteritems():
+        for k, v in args.iteritems():
             if isinstance(Contest.__table__.c[k].type,
-                    sqlalchemy.sql.sqltypes.DateTime):
+                          sqlalchemy.sql.sqltypes.DateTime):
                 args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
-        contest =  Contest(args)
+        contest = Contest(args)
         db.session.add(contest)
         db.session.commit()
         return 201

@@ -4,8 +4,8 @@ from flask_restful import reqparse, Resource
 from sqlalchemy.orm import class_mapper
 from flask_jwt import jwt_required
 
-class Vote(db.Model):
 
+class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     vote = db.Column(db.Integer, nullable=False)
@@ -25,11 +25,12 @@ class Vote(db.Model):
 
 # converts f.e. datetime objects to strings
 def prepare_dict_for_json(d):
-    del(d['_sa_instance_state'])
+    del (d['_sa_instance_state'])
     for k, v in d.iteritems():
         if isinstance(v, datetime):
             d[k] = str(v)
     return d
+
 
 """ Why ?
 parser = reqparse.RequestParser()
@@ -42,6 +43,7 @@ for prop in class_mapper(Vote).iterate_properties:
 
 class VoteApi(Resource):
     decorators = [jwt_required()]
+
     def get(self, voteId):
         return prepare_dict_for_json(Vote.query.get(voteId).__dict__)
 
@@ -60,7 +62,7 @@ class VoteApi(Resource):
             if v is not None:
                 # parse datetime back
                 if isinstance(Vote.__table__.c[k].type,
-                        sqlalchemy.sql.sqltypes.DateTime):
+                              sqlalchemy.sql.sqltypes.DateTime):
                     v = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
                 db.session.query(Vote).filter_by(id=voteId).update({k: v})
         db.session.commit()
@@ -69,6 +71,7 @@ class VoteApi(Resource):
 
 class VoteListApi(Resource):
     decorators = [jwt_required()]
+
     def get(self):
         votes = {}
         for c in Vote.query.all():
@@ -81,7 +84,7 @@ class VoteListApi(Resource):
         args = parser.parse_args()
         for k, v in args.iteritems():
             if isinstance(Vote.__table__.c[k].type,
-                    sqlalchemy.sql.sqltypes.DateTime):
+                          sqlalchemy.sql.sqltypes.DateTime):
                 args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
         vote = Vote(args)
         db.session.add(vote)

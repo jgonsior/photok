@@ -14,7 +14,7 @@ class User(db.Model, UserMixin):
 
     # Relationships
     roles = db.relationship('Role', secondary='user_roles',
-            backref=db.backref('users', lazy='dynamic'))
+                            backref=db.backref('users', lazy='dynamic'))
 
     # User authentication information
     username = db.Column(db.String(50), nullable=False, unique=True)
@@ -31,7 +31,6 @@ class User(db.Model, UserMixin):
     # added on our own, the rest is from the flask-user documentation
     profilePicture = db.Column(db.String(255), server_default='defaultProfilePicture.jpg')
 
-    
     def __repr__(self):
         return '<User %r>' % self.username
 
