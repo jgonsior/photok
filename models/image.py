@@ -77,7 +77,7 @@ class ImageApi(Resource):
 
 
 class ImageListApi(Resource):
-    decorators = [jwt_required]
+    decorators = [jwt_required()]
 
     def get(self, contestId):
         images = {}
