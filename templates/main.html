@@ -72,11 +72,9 @@
 			<div class="container" style="margin-top:1em;">
 				<div class="header clearfix">
 					<nav ng-controller="HeaderController">
-						<span class="user" ng-if="username">Hello {{ username }}</span>
 						<div ng-if="error" class="alert alert-danger">{{error}}</div>
 						<ul class="nav nav-pills pull-right">
 
-							<li role="presentation" ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/add')}" ><a ui-sref="create-contest">Add contest</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/contests')}" ><a ui-sref="contest-list">Contests</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/login')}" ><a ui-sref="login">Login</a></li>

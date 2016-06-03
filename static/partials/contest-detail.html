@@ -23,8 +23,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
           <div class="form-group">
             <label for="image">Image*</label>
             <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-    ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
-    ngf-resize="{width: 100, height: 100}">Select</div>
+    ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100">Select</div>
     <!--
             <input type="file" file-model="freakinimage" name="file"/>
 
@@ -39,7 +38,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
         <div class="col-md-6">
           <h4>Image preview</h4>
- <img ngf-thumbnail="file || '/thumb.jpg'">
+ <img ngf-thumbnail="file || '/thumb.jpg'" ng-if="file" width="400px">
         </div>
       </div>
       <hr/>
@@ -128,7 +127,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
         <a class="thumbnail" href="#">
             <img class="img-responsive" src="{{participations[i].path}}" alt="">
         </a>
-        <h4 class="text-center">{{participations[i].title}} {{$index}}</h4>
+        <h4 class="text-center">{{participations[i].title}}</h4>
         <ul>
           <li><b>real data</b></li>
           <li>title: {{participations[i].title}}</li>

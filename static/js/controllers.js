@@ -179,23 +179,29 @@ function($http, $scope, $stateParams, Contest, ContestImages, ImageParticipation
     ImageParticipation.sendImage($scope.participation.title, name, "exif-fake-data",contest,"1")
       // handle success
       .then(function () {
-				alert('[ctrl] success... sending image');
+				//alert('[ctrl] success... sending image');
 
 				if ($scope.form.file.$valid && $scope.file) {
         	$scope.upload($scope.file, basename);
-					alert('[upload] done');
+					//alert('[upload] done');
       	}
-				else alert('[upload] error');
+				//else alert('[upload] error');
       })
       .catch(function () {
-        alert('[ctrl] error');
+        //alert('[ctrl] error');
       });
 
 			// Add the image to the view
 			// TODO: maybe try to get the *id* from the call above
 			// TODO: the image doesn't print even if the path is correct...
-			$scope.add($scope.participation.title, name, "exif-fake-data",contest,"1");
-			$scope.participate = false;
+
+			setTimeout(function(){
+				$scope.add($scope.participation.title, name, "exif-fake-data",contest,"1");
+				$scope.participate = false;
+			}, 1);
+
+
+			alert("SENDING: done");
 	};
 
 }]);
@@ -283,7 +289,7 @@ photokControllers.controller('EditContestController', ['$http', '$scope', '$stat
 		// handle error
 			.catch(function () {
 				//$scope.error = true;
-				alert('CONTROLLER: Error');
+				//alert('CONTROLLER: Error');
 			});
 
 		alert("DELETING: Done");
@@ -387,39 +393,11 @@ photokControllers.controller('VoteContestController', ['$http', '$scope', '$stat
 		alert("VOTING: "+$scope.results);
 
 		// Call the service function that will connect with the API
-		ImageParticipation.voteImage($scope.results.first,1)
-		// handle success
-			.then(function () {
-				alert('CONTROLLER: Success');
-			})
-		// handle error
-			.catch(function () {
-				//$scope.error = true;
-				alert('CONTROLLER: Error');
-			});
+		ImageParticipation.voteImage($scope.results.first,1);
 
-		ImageParticipation.voteImage($scope.results.second,2)
-		// handle success
-			.then(function () {
-				alert('CONTROLLER: Success');
-			})
-		// handle error
-			.catch(function () {
-				//$scope.error = true;
-				alert('CONTROLLER: Error');
-			});
+		ImageParticipation.voteImage($scope.results.second,2);
 
-		ImageParticipation.voteImage($scope.results.third,3)
-		// handle success
-			.then(function () {
-				alert('CONTROLLER: Success');
-			})
-		// handle error
-			.catch(function () {
-				//$scope.error = true;
-				alert('CONTROLLER: Error');
-			});
-
+		ImageParticipation.voteImage($scope.results.third,3);
 
 		alert("VOTING: Done");
 	};
