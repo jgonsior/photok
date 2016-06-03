@@ -14,7 +14,6 @@ except IOError:
 
 from photok import app as application
 
-
 #
 # Below for testing only
 #

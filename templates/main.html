@@ -24,6 +24,8 @@
 		<script src="static/js/services.js"></script>
 		<script src="static/js/app.js"></script>
 		<script src="static/js/moment.min.js"></script>
+		<script src='static/js/ng-file-upload.min.js'></script>
+		<script src='static/js/ng-file-upload-shim.min.js'></script>
 
 		<!-- added these to try and fix upload -->
 		<script src="//cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/1.6.1/angular-file-upload.js"></script>
@@ -70,11 +72,9 @@
 			<div class="container" style="margin-top:1em;">
 				<div class="header clearfix">
 					<nav ng-controller="HeaderController">
-						<span class="user" ng-if="username">Hello {{ username }}</span>
 						<div ng-if="error" class="alert alert-danger">{{error}}</div>
 						<ul class="nav nav-pills pull-right">
 
-							<li role="presentation" ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/add')}" ><a ui-sref="create-contest">Add contest</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/contests')}" ><a ui-sref="contest-list">Contests</a></li>
 							<li role="presentation" ng-class="{ active: isActive('/login')}" ><a ui-sref="login">Login</a></li>

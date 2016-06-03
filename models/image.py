@@ -6,8 +6,8 @@ import sqlalchemy
 from models.user import User
 from flask_jwt import jwt_required
 
-class Image(db.Model):
 
+class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     uploadedOn = db.Column(db.DateTime(), nullable=False)
@@ -24,22 +24,22 @@ class Image(db.Model):
     contestId = db.Column(db.Integer, db.ForeignKey('contest.id', ondelete='CASCADE'))
     contest = db.relationship('Contest', backref=db.backref('Image', lazy='dynamic'))
 
-
     def __init__(self, args):
-        self.createdDate =  datetime.utcnow()
-        for k,v in args.iteritems():
-           if k == "uploadedOn" and v is None:
-               v = datetime.utcnow()
-           setattr(self, k, v)
+        self.createdDate = datetime.utcnow()
+        for k, v in args.iteritems():
+            if k == "uploadedOn" and v is None:
+                v = datetime.utcnow()
+            setattr(self, k, v)
 
 
 # converts f.e. datetime objects to strings
 def prepare_dict_for_json(d):
-    del(d['_sa_instance_state'])
-    for k,v in d.iteritems():
+    del (d['_sa_instance_state'])
+    for k, v in d.iteritems():
         if isinstance(v, datetime):
             d[k] = str(v)
     return d
+
 
 parser = reqparse.RequestParser()
 # accept in a magical way all properties of our model :)
@@ -50,6 +50,7 @@ for prop in class_mapper(Image).iterate_properties:
 
 class ImageApi(Resource):
     decorators = [jwt_required()]
+
     def get(self, imageId):
         return prepare_dict_for_json(Image.query.get(imageId).__dict__)
 
@@ -63,19 +64,21 @@ class ImageApi(Resource):
     def put(self, imageId):
         # deserialize json :)
         args = parser.parse_args()
-        #save only the changed attributes
+        # save only the changed attributes
         for k, v in args.iteritems():
             if v is not None:
                 # parse datetime back
                 if isinstance(Image.__table__.c[k].type,
-                        sqlalchemy.sql.sqltypes.DateTime):
+                              sqlalchemy.sql.sqltypes.DateTime):
                     v = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
-                db.session.query(Image).filter_by(id=imageId).update({k:v})
+                db.session.query(Image).filter_by(id=imageId).update({k: v})
         db.session.commit()
         return 201
 
+
 class ImageListApi(Resource):
-    decorators = [jwt_required]
+    decorators = [jwt_required()]
+
     def get(self, contestId):
         images = {}
         for c in Image.query.filter(Image.contestId == contestId):
@@ -87,9 +90,9 @@ class ImageListApi(Resource):
     def post(self, contestId):
         args = parser.parse_args()
 
-        for k,v in args.iteritems():
+        for k, v in args.iteritems():
             if isinstance(Image.__table__.c[k].type,
-                    sqlalchemy.sql.sqltypes.DateTime):
+                          sqlalchemy.sql.sqltypes.DateTime):
                 if v != None:
                     args[k] = datetime.strptime(v, "%Y-%m-%d %H:%M:%S.%f")
 

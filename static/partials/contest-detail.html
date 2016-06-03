@@ -9,7 +9,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
 
     <hr/>
 
-    <form name="form" class="css-form" novalidate ng-submit="sendImage()">
+    <form enctype="multipart/form-data" name="form" method="post" class="css-form" ng-submit="sendImage()" novalidate>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -20,22 +20,25 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
             <div ng-show="form.title.$error.required" class="alert alert-danger">What is the title of your participation?</div>
           </div>
 
-
           <div class="form-group">
             <label for="image">Image*</label>
-            <input type="file" ng-model="participation.image" name="image" required="" placeholder="Image"/>
+            <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+    ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100">Select</div>
+    <!--
+            <input type="file" file-model="freakinimage" name="file"/>
+
+            <input type="file" ng-model="participation.image" name="file" required="" placeholder="Image"/>
+            -->
           </div>
           <div ng-show="form.$submitted || form.image.$touched">
             <div ng-show="form.image.$error.required" class="alert alert-danger">What is the image of your participation?</div>
           </div>
-
         </div>
 
 
         <div class="col-md-6">
           <h4>Image preview</h4>
-          <img />
-
+ <img ngf-thumbnail="file || '/thumb.jpg'" ng-if="file" width="400px">
         </div>
       </div>
       <hr/>
@@ -124,7 +127,7 @@ box-shadow:0 0 30px grey;background:white;z-index:999999;" class="container">
         <a class="thumbnail" href="#">
             <img class="img-responsive" src="{{participations[i].path}}" alt="">
         </a>
-        <h4 class="text-center">{{participations[i].title}} {{$index}}</h4>
+        <h4 class="text-center">{{participations[i].title}}</h4>
         <ul>
           <li><b>real data</b></li>
           <li>title: {{participations[i].title}}</li>
