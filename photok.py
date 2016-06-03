@@ -8,7 +8,7 @@ from wtforms.validators import ValidationError
 from wtforms.fields.html5 import DateField
 from wtforms import Form, BooleanField, StringField, FileField, TextAreaField, validators
 from models import db
-from models.contest import Contest, ContestApi, ContestListApi
+from models.contest import Contest, ContestApi, ContestListPublicApi, ContestListPrivateApi
 from models.vote import Vote, VoteApi, VoteListApi
 from models.image import Image, ImageApi, ImageListApi
 from models.user import User, Role
@@ -131,7 +131,8 @@ with app.app_context():
 
     # define REST api entry points
     api.add_resource(ContestApi, '/api/contests/<contestId>')
-    api.add_resource(ContestListApi, '/api/contests')
+    api.add_resource(ContestListPublicApi, '/api/contestsPublic')
+    api.add_resource(ContestListPrivateApi, '/api/contestsPrivate')
 
     api.add_resource(ImageApi, '/api/images/<imageId>')
     api.add_resource(ImageListApi, '/api/images/contest/<contestId>')

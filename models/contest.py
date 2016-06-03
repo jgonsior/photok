@@ -76,16 +76,8 @@ class ContestApi(Resource):
         db.session.commit()
         return 201
 
-
-class ContestListApi(Resource):
+class ContestListPrivateApi(Resource):
     decorators = [jwt_required()]
-
-    def get(self):
-        contests = []
-        for c in Contest.query.all():
-            contest = prepare_dict_for_json(c.__dict__)
-            contests.append(contest)
-        return contests
 
     # post -> add new contest
     def post(self):
@@ -98,3 +90,13 @@ class ContestListApi(Resource):
         db.session.add(contest)
         db.session.commit()
         return 201
+
+class ContestListPublicApi(Resource):
+
+    def get(self):
+        contests = []
+        for c in Contest.query.all():
+            contest = prepare_dict_for_json(c.__dict__)
+            contests.append(contest)
+        return contests
+

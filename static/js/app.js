@@ -88,7 +88,7 @@ photokApp.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '
 // In order to change the <title> tag depending on the page
 photokApp.run(['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
-		if(!$localStorage.currentUser) {
+		if(!$localStorage.currentUser && toState.name !== "contest-list") {
 			if(toState.name !== "login") {
 				//stop the default route
 				event.preventDefault();

@@ -46,7 +46,7 @@ photokControllers.controller('LogoutController', ['AuthenticationService', funct
  */
 photokControllers.controller('ContestListController', ['$http', '$scope', 'Contest',  function($http, $scope, Contest) {
 
-	$http.get('api/contests').success(function(result) {
+	$http.get('api/contestsPublic').success(function(result) {
 		$scope.contests = result;
 		angular.forEach(result, function(value, key) {
 			var date = moment(value.endDate);
