@@ -1,4 +1,6 @@
 # Functional and technological specification
+## Screencast
+The screencast can be found here: https://www.youtube.com/watch?v=WLmRMQ1ID40 and the running web application there: http://photok-photok.openshift.ida.liu.se/ (you can create a new user under http://photok-photok.openshift.ida.liu.se/user/register or you just log in with test/test.
 ## Functional specification:
 
 Photok is a web application around photo contests. Every user
