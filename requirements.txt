@@ -1,4 +1,4 @@
-Flask==1.0
+Flask==2.3.2
 Flask-SQLAlchemy==2.1
 Flask-User==0.6.8
 SQLAlchemy==1.3.0
